@@ -8884,7 +8884,527 @@ function patchScopedSlots (instance) {
   }
 }
 
-},{}],"src/App.vue":[function(require,module,exports) {
+},{}],"src/views/LoginPage.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: 'LoginPage',
+  props: ['baseUrl', 'isLogin', 'user', 'newUser'],
+  methods: {
+    login: function login() {
+      var _this = this;
+
+      axios({
+        method: 'POST',
+        url: this.baseUrl + '/users/login',
+        data: {
+          email: this.user.email,
+          password: this.user.password
+        }
+      }).then(function (result) {
+        localStorage.setItem('token', result.data.access_token);
+        _this.user.email = '';
+        _this.user.password = '';
+
+        _this.$emit('changeLogin', true);
+
+        _this.$emit('getTasks');
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    register: function register() {
+      var _this2 = this;
+
+      if (this.newUser.password === this.newUser.confirm) {
+        axios({
+          method: 'POST',
+          url: this.baseUrl + '/users/register',
+          data: {
+            email: this.newUser.email,
+            password: this.newUser.password
+          }
+        }).then(function (result) {
+          _this2.newUser.email = '';
+          _this2.newUser.password = '';
+          _this2.newUser.confirm = '';
+          $('#register').modal('hide');
+        }).catch(function (err) {
+          console.log(err);
+        });
+      } else {
+        console.log('Password and confirm is not the same');
+      }
+    },
+    onSignIn: function onSignIn(googleUser) {
+      var _this3 = this;
+
+      var id_token = googleUser.getAuthResponse().id_token;
+      axios({
+        method: 'POST',
+        url: this.baseUrl + '/users/googleSign',
+        data: {
+          id_token: id_token
+        }
+      }).then(function (result) {
+        localStorage.setItem('token', result.data.access_token);
+        _this3.user.email = '';
+        _this3.user.password = '';
+
+        _this3.$emit('changeLogin', true);
+
+        _this3.$emit('getTasks');
+      }).catch(function (err) {
+        console.log(err.responseJSON, 'err');
+      });
+    }
+  },
+  mounted: function mounted() {
+    gapi.signin2.render('google-signin-button', {
+      onsuccess: this.onSignIn
+    });
+  }
+};
+exports.default = _default;
+        var $956bbc = exports.default || module.exports;
+      
+      if (typeof $956bbc === 'function') {
+        $956bbc = $956bbc.options;
+      }
+    
+        /* template */
+        Object.assign($956bbc, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "form",
+      {
+        staticClass: "form-signin",
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.login($event)
+          }
+        }
+      },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-label-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.user.email,
+                expression: "user.email"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "email",
+              id: "email",
+              placeholder: "Email address",
+              required: "",
+              autofocus: ""
+            },
+            domProps: { value: _vm.user.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.user, "email", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "email" } }, [_vm._v("Email address")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-label-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.user.password,
+                expression: "user.password"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              id: "password",
+              placeholder: "Password",
+              required: ""
+            },
+            domProps: { value: _vm.user.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.user, "password", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "password" } }, [_vm._v("Password")])
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-lg btn-primary btn-block",
+            attrs: { type: "submit" }
+          },
+          [_vm._v("Login")]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _vm._m(1),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "register",
+          "data-backdrop": "static",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "staticBackdropLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          { staticClass: "modal-dialog", attrs: { role: "document" } },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c("div", { staticClass: "modal-body" }, [
+                _c(
+                  "form",
+                  {
+                    staticClass: "form-signin",
+                    on: {
+                      submit: function($event) {
+                        $event.preventDefault()
+                        return _vm.register($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("div", { staticClass: "form-label-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newUser.email,
+                            expression: "newUser.email"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "email",
+                          id: "registerEmail",
+                          placeholder: "Email Address",
+                          required: "",
+                          autofocus: ""
+                        },
+                        domProps: { value: _vm.newUser.email },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.newUser, "email", $event.target.value)
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "registerEmail" } }, [
+                        _vm._v("Email")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-label-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newUser.password,
+                            expression: "newUser.password"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "password",
+                          id: "registerPassword",
+                          placeholder: "Password",
+                          required: ""
+                        },
+                        domProps: { value: _vm.newUser.password },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.newUser,
+                              "password",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "registerPassword" } }, [
+                        _vm._v("Password")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-label-group" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newUser.confirm,
+                            expression: "newUser.confirm"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "password",
+                          id: "registerConfirm",
+                          placeholder: "Confirm Password",
+                          required: ""
+                        },
+                        domProps: { value: _vm.newUser.confirm },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.newUser,
+                              "confirm",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "registerConfirm" } }, [
+                        _vm._v("Confirm Password")
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v("Register")]
+                    )
+                  ]
+                )
+              ])
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center mb-4" }, [
+      _c("img", {
+        staticClass: "mb-4",
+        attrs: {
+          src: "/hacktiv8.7e952a32.png",
+          alt: "",
+          width: "72",
+          height: "72"
+        }
+      }),
+      _vm._v(" "),
+      _c("h1", [_vm._v("Kanban Board")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "row", staticStyle: { "justify-content": "center" } },
+      [
+        _c("div", {
+          staticClass: "m-3",
+          attrs: { id: "google-signin-button" }
+        }),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary m-3",
+            attrs: {
+              type: "button",
+              "data-toggle": "modal",
+              "data-target": "#register"
+            }
+          },
+          [_vm._v("\n                Register\n            ")]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "staticBackdropLabel" } },
+        [_vm._v("Register")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close"
+          }
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$956bbc', $956bbc);
+          } else {
+            api.reload('$956bbc', $956bbc);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"./../hacktiv8.png":[["hacktiv8.7e952a32.png","src/hacktiv8.png"],"src/hacktiv8.png"],"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/MainPage.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9073,146 +9593,20 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var _default = {
-  data: function data() {
-    return {
-      //localhost
-      baseUrl: 'http://localhost:3000',
-      //firebase
-      //baseUrl: '',
-      isLogin: false,
-      user: {
-        email: "",
-        password: ""
-      },
-      newUser: {
-        email: "",
-        password: "",
-        confirm: ""
-      },
-      task: {
-        title: "",
-        category: ""
-      },
-      tasks: [],
-      backlogs: [],
-      todos: [],
-      dones: [],
-      completeds: []
-    };
-  },
+  name: 'MainPage',
+  props: ['baseUrl', 'task', 'tasks', 'backlogs', 'todos', 'dones', 'completeds'],
   methods: {
-    login: function login() {
-      var _this = this;
-
-      axios({
-        method: 'POST',
-        url: this.baseUrl + '/users/login',
-        data: {
-          email: this.user.email,
-          password: this.user.password
-        }
-      }).then(function (result) {
-        localStorage.setItem('token', result.data.access_token);
-        _this.user.email = '';
-        _this.user.password = '';
-        _this.isLogin = true;
-
-        _this.getTasks();
-      }).catch(function (err) {
-        console.log(err);
+    logout: function logout() {
+      localStorage.removeItem('token');
+      this.$emit('changeLogin', false);
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
       });
     },
-    register: function register() {
-      var _this2 = this;
-
-      if (this.newUser.password === this.newUser.confirm) {
-        axios({
-          method: 'POST',
-          url: this.baseUrl + '/users/register',
-          data: {
-            email: this.newUser.email,
-            password: this.newUser.password
-          }
-        }).then(function (result) {
-          _this2.newUser.email = '';
-          _this2.newUser.password = '';
-          _this2.newUser.confirm = '';
-          $('#register').modal('hide');
-        }).catch(function (err) {
-          console.log(err);
-        });
-      } else {
-        console.log('Password and confirm is not the same');
-      }
-    },
     addTask: function addTask() {
-      var _this3 = this;
+      var _this = this;
 
       axios({
         method: "POST",
@@ -9225,54 +9619,18 @@ var _default = {
           access_token: localStorage.token
         }
       }).then(function (result) {
-        _this3.task.title = '';
-        _this3.task.category = '';
+        _this.task.title = '';
+        _this.task.category = '';
 
-        _this3.getTasks();
+        _this.$emit('getTasks');
 
         $('#addTask').modal('hide');
       }).catch(function (err) {
         console.log(err);
       });
     },
-    getTasks: function getTasks() {
-      var _this4 = this;
-
-      this.tasks = [];
-      this.backlogs = [];
-      this.todos = [];
-      this.dones = [];
-      this.completeds = [];
-      axios({
-        method: 'GET',
-        url: this.baseUrl + '/tasks',
-        headers: {
-          access_token: localStorage.token
-        }
-      }).then(function (result) {
-        _this4.tasks = result.data.result;
-        console.log('task', _this4.tasks);
-
-        _this4.separateCategory();
-      }).catch(function (err) {
-        console.log(err);
-      });
-    },
-    separateCategory: function separateCategory() {
-      for (var i = 0; i < this.tasks.length; i++) {
-        if (this.tasks[i].category == 'backlog') {
-          this.backlogs.push(this.tasks[i]);
-        } else if (this.tasks[i].category == 'todo') {
-          this.todos.push(this.tasks[i]);
-        } else if (this.tasks[i].category == 'done') {
-          this.dones.push(this.tasks[i]);
-        } else if (this.tasks[i].category == 'completed') {
-          this.completeds.push(this.tasks[i]);
-        }
-      }
-    },
     destroy: function destroy(id) {
-      var _this5 = this;
+      var _this2 = this;
 
       axios({
         method: 'DELETE',
@@ -9281,16 +9639,14 @@ var _default = {
           access_token: localStorage.token
         }
       }).then(function (result) {
-        _this5.getTasks();
+        _this2.$emit('getTasks');
       }).catch(function (err) {
         console.log(err);
       });
     },
     nextCat: function nextCat(id, category) {
-      var _this6 = this;
+      var _this3 = this;
 
-      console.log('id: ', id);
-      console.log('category: ', category);
       var nextCategory = '';
 
       if (category === 'backlog') {
@@ -9314,17 +9670,15 @@ var _default = {
             access_token: localStorage.token
           }
         }).then(function (result) {
-          _this6.getTasks();
+          _this3.$emit('getTasks');
         }).catch(function (err) {
           console.log(err);
         });
       }
     },
     previousCat: function previousCat(id, category) {
-      var _this7 = this;
+      var _this4 = this;
 
-      console.log('id: ', id);
-      console.log('category: ', category);
       var previousCategory = '';
 
       if (category === 'todo') {
@@ -9348,161 +9702,210 @@ var _default = {
             access_token: localStorage.token
           }
         }).then(function (result) {
-          _this7.getTasks();
+          _this4.$emit('getTasks');
         }).catch(function (err) {
           console.log(err);
         });
       }
-    },
-    onSignIn: function onSignIn(googleUser) {
-      var _this8 = this;
-
-      console.log('masuk sini');
-      var id_token = googleUser.getAuthResponse().id_token;
-      axios({
-        method: 'POST',
-        url: this.baseUrl + '/users/googleSign',
-        data: {
-          id_token: id_token
-        }
-      }).then(function (data) {
-        localStorage.setItem('token', data.access_token);
-        _this8.user.email = '';
-        _this8.user.password = '';
-        _this8.isLogin = true;
-      }).catch(function (err) {
-        console.log(err.responseJSON, 'err');
-      });
-    },
-    logout: function logout() {
-      localStorage.removeItem('token');
-      this.isLogin = false; //GOOGLE OAUTH SIGNOUT
-
-      var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        console.log('User signed out.');
-      });
-    }
-  },
-  created: function created() {
-    if (localStorage.token) {
-      this.isLogin = true;
-      this.getTasks();
     }
   }
 };
 exports.default = _default;
-        var $229e61 = exports.default || module.exports;
+        var $f9400b = exports.default || module.exports;
       
-      if (typeof $229e61 === 'function') {
-        $229e61 = $229e61.options;
+      if (typeof $f9400b === 'function') {
+        $f9400b = $f9400b.options;
       }
     
         /* template */
-        Object.assign($229e61, (function () {
+        Object.assign($f9400b, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid" }, [
-    !_vm.isLogin
-      ? _c("div", { staticClass: "container" }, [
+    _c("header", [
+      _c("nav", { staticClass: "navbar fixed-top" }, [
+        _c("img", {
+          attrs: {
+            src: "/hacktiv8.7e952a32.png",
+            alt: "",
+            width: "48",
+            height: "48"
+          }
+        }),
+        _vm._v(" "),
+        _c("h1", [_vm._v(" Kanban Board ")]),
+        _vm._v(" "),
+        _c("div", [
           _c(
-            "form",
+            "button",
             {
-              staticClass: "form-signin",
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.login($event)
-                }
+              staticClass: "btn btn-primary",
+              attrs: {
+                type: "button",
+                "data-toggle": "modal",
+                "data-target": "#addTask"
               }
             },
             [
-              _vm._m(0),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-label-group" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.user.email,
-                      expression: "user.email"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "email",
-                    id: "email",
-                    placeholder: "Email address",
-                    required: "",
-                    autofocus: ""
-                  },
-                  domProps: { value: _vm.user.email },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.user, "email", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("label", { attrs: { for: "email" } }, [
-                  _vm._v("Email address")
-                ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-label-group" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.user.password,
-                      expression: "user.password"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: {
-                    type: "password",
-                    id: "password",
-                    placeholder: "Password",
-                    required: ""
-                  },
-                  domProps: { value: _vm.user.password },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.user, "password", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("label", { attrs: { for: "password" } }, [
-                  _vm._v("Password")
-                ])
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
-                {
-                  staticClass: "btn btn-lg btn-primary btn-block",
-                  attrs: { type: "submit" }
-                },
-                [_vm._v("Login")]
+              _vm._v(
+                "\n                          Add Task\n                      "
               )
             ]
           ),
           _vm._v(" "),
-          _c("div", {
-            staticClass: "g-signin2 form-signin",
-            attrs: { "data-onsuccess": "onSignIn" }
-          }),
+          _c(
+            "div",
+            {
+              staticClass: "modal fade",
+              attrs: {
+                id: "addTask",
+                "data-backdrop": "",
+                tabindex: "-1",
+                role: "dialog",
+                "aria-labelledby": "taskLabel",
+                "aria-hidden": "true"
+              }
+            },
+            [
+              _c(
+                "div",
+                { staticClass: "modal-dialog", attrs: { role: "document" } },
+                [
+                  _c("div", { staticClass: "modal-content" }, [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "modal-body" }, [
+                      _c(
+                        "form",
+                        {
+                          staticClass: "form-signin",
+                          on: {
+                            submit: function($event) {
+                              $event.preventDefault()
+                              return _vm.addTask($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "form-label-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.task.title,
+                                  expression: "task.title"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                type: "text",
+                                id: "taskTitle",
+                                placeholder: "Task Title",
+                                required: "",
+                                autofocus: ""
+                              },
+                              domProps: { value: _vm.task.title },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.$set(
+                                    _vm.task,
+                                    "title",
+                                    $event.target.value
+                                  )
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("label", { attrs: { for: "taskTitle" } }, [
+                              _vm._v("Task Title")
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c(
+                              "select",
+                              {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: _vm.task.category,
+                                    expression: "task.category"
+                                  }
+                                ],
+                                staticClass: "custom-select",
+                                attrs: { id: "taskCategory", required: "" },
+                                on: {
+                                  change: function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      _vm.task,
+                                      "category",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  }
+                                }
+                              },
+                              [
+                                _c(
+                                  "option",
+                                  { attrs: { value: "", disabled: "" } },
+                                  [_vm._v("Choose Category")]
+                                ),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "backlog" } }, [
+                                  _vm._v("Backlog")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "todo" } }, [
+                                  _vm._v("To Do")
+                                ]),
+                                _vm._v(" "),
+                                _c("option", { attrs: { value: "done" } }, [
+                                  _vm._v("Done ")
+                                ]),
+                                _vm._v(" "),
+                                _c(
+                                  "option",
+                                  { attrs: { value: "completed" } },
+                                  [_vm._v("Completed ")]
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-primary",
+                              attrs: { type: "submit" }
+                            },
+                            [_vm._v("Add Task")]
+                          )
+                        ]
+                      )
+                    ])
+                  ])
+                ]
+              )
+            ]
+          ),
           _vm._v(" "),
           _c(
             "button",
@@ -9516,906 +9919,383 @@ exports.default = _default;
               }
             },
             [_vm._v("Logout")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-primary",
-              attrs: {
-                type: "button",
-                "data-toggle": "modal",
-                "data-target": "#register"
-              }
-            },
-            [_vm._v("\n            Register\n        ")]
-          ),
+          )
+        ])
+      ])
+    ]),
+    _vm._v(" "),
+    _c("main", { staticClass: "medium" }, [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col columns bg-transparent border-set" }, [
+          _vm._m(1),
           _vm._v(" "),
           _c(
             "div",
-            {
-              staticClass: "modal fade",
-              attrs: {
-                id: "register",
-                "data-backdrop": "static",
-                tabindex: "-1",
-                role: "dialog",
-                "aria-labelledby": "staticBackdropLabel",
-                "aria-hidden": "true"
-              }
-            },
-            [
-              _c(
-                "div",
-                { staticClass: "modal-dialog", attrs: { role: "document" } },
-                [
-                  _c("div", { staticClass: "modal-content" }, [
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "modal-body" }, [
-                      _c(
-                        "form",
-                        {
-                          staticClass: "form-signin",
-                          on: {
-                            submit: function($event) {
-                              $event.preventDefault()
-                              return _vm.register($event)
-                            }
-                          }
-                        },
-                        [
-                          _c("div", { staticClass: "form-label-group" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.newUser.email,
-                                  expression: "newUser.email"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "email",
-                                id: "registerEmail",
-                                placeholder: "Email Address",
-                                required: "",
-                                autofocus: ""
-                              },
-                              domProps: { value: _vm.newUser.email },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.newUser,
-                                    "email",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", { attrs: { for: "registerEmail" } }, [
-                              _vm._v("Email")
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-label-group" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.newUser.password,
-                                  expression: "newUser.password"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "password",
-                                id: "registerPassword",
-                                placeholder: "Password",
-                                required: ""
-                              },
-                              domProps: { value: _vm.newUser.password },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.newUser,
-                                    "password",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c(
-                              "label",
-                              { attrs: { for: "registerPassword" } },
-                              [_vm._v("Password")]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-label-group" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.newUser.confirm,
-                                  expression: "newUser.confirm"
-                                }
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                type: "password",
-                                id: "registerConfirm",
-                                placeholder: "Confirm Password",
-                                required: ""
-                              },
-                              domProps: { value: _vm.newUser.confirm },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.newUser,
-                                    "confirm",
-                                    $event.target.value
-                                  )
-                                }
-                              }
-                            }),
-                            _vm._v(" "),
-                            _c("label", { attrs: { for: "registerConfirm" } }, [
-                              _vm._v("Confirm Password")
-                            ])
-                          ]),
-                          _vm._v(" "),
-                          _c(
-                            "button",
-                            {
-                              staticClass: "btn btn-primary",
-                              attrs: { type: "submit" }
-                            },
-                            [_vm._v("Register")]
-                          )
-                        ]
-                      )
-                    ])
-                  ])
-                ]
-              )
-            ]
-          )
-        ])
-      : _c("div", { staticClass: "container-fluid" }, [
-          _c("header", [
-            _c("nav", { staticClass: "navbar fixed-top" }, [
-              _c("img", {
-                attrs: {
-                  src: "/hacktiv8.7e952a32.png",
-                  alt: "",
-                  width: "48",
-                  height: "48"
-                }
-              }),
-              _vm._v(" "),
-              _c("h1", [_vm._v(" Kanban Board ")]),
-              _vm._v(" "),
-              _c("div", [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-primary",
-                    attrs: {
-                      type: "button",
-                      "data-toggle": "modal",
-                      "data-target": "#addTask"
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                        Add Task\n                    "
-                    )
-                  ]
-                ),
-                _vm._v(" "),
+            { staticClass: "col overflowing" },
+            _vm._l(_vm.backlogs, function(task) {
+              return _c("div", { staticClass: "row content" }, [
                 _c(
                   "div",
                   {
-                    staticClass: "modal fade",
-                    attrs: {
-                      id: "addTask",
-                      "data-backdrop": "",
-                      tabindex: "-1",
-                      role: "dialog",
-                      "aria-labelledby": "taskLabel",
-                      "aria-hidden": "true"
-                    }
+                    staticClass: "card border-success mb-3",
+                    staticStyle: { width: "100%", "max-width": "18rem" }
                   },
                   [
                     _c(
                       "div",
-                      {
-                        staticClass: "modal-dialog",
-                        attrs: { role: "document" }
-                      },
+                      { staticClass: "card-header bg-success border-success" },
                       [
-                        _c("div", { staticClass: "modal-content" }, [
-                          _vm._m(2),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "modal-body" }, [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col full previous" }, [
                             _c(
-                              "form",
+                              "button",
                               {
-                                staticClass: "form-signin",
+                                staticClass: "bg-transparent btn-block",
                                 on: {
-                                  submit: function($event) {
+                                  click: function($event) {
                                     $event.preventDefault()
-                                    return _vm.addTask($event)
+                                    return _vm.previousCat(
+                                      task.id,
+                                      task.category
+                                    )
                                   }
                                 }
                               },
-                              [
-                                _c("div", { staticClass: "form-label-group" }, [
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.task.title,
-                                        expression: "task.title"
-                                      }
-                                    ],
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      type: "text",
-                                      id: "taskTitle",
-                                      placeholder: "Task Title",
-                                      required: "",
-                                      autofocus: ""
-                                    },
-                                    domProps: { value: _vm.task.title },
-                                    on: {
-                                      input: function($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.task,
-                                          "title",
-                                          $event.target.value
-                                        )
-                                      }
-                                    }
-                                  }),
-                                  _vm._v(" "),
-                                  _c("label", { attrs: { for: "taskTitle" } }, [
-                                    _vm._v("Task Title")
-                                  ])
-                                ]),
-                                _vm._v(" "),
-                                _c("div", { staticClass: "form-group" }, [
-                                  _c(
-                                    "select",
-                                    {
-                                      directives: [
-                                        {
-                                          name: "model",
-                                          rawName: "v-model",
-                                          value: _vm.task.category,
-                                          expression: "task.category"
-                                        }
-                                      ],
-                                      staticClass: "custom-select",
-                                      attrs: {
-                                        id: "taskCategory",
-                                        required: ""
-                                      },
-                                      on: {
-                                        change: function($event) {
-                                          var $$selectedVal = Array.prototype.filter
-                                            .call(
-                                              $event.target.options,
-                                              function(o) {
-                                                return o.selected
-                                              }
-                                            )
-                                            .map(function(o) {
-                                              var val =
-                                                "_value" in o
-                                                  ? o._value
-                                                  : o.value
-                                              return val
-                                            })
-                                          _vm.$set(
-                                            _vm.task,
-                                            "category",
-                                            $event.target.multiple
-                                              ? $$selectedVal
-                                              : $$selectedVal[0]
-                                          )
-                                        }
-                                      }
-                                    },
-                                    [
-                                      _c("option", { attrs: { value: "" } }, [
-                                        _vm._v("Choose Category")
-                                      ]),
-                                      _vm._v(" "),
-                                      _c(
-                                        "option",
-                                        { attrs: { value: "backlog" } },
-                                        [_vm._v("Backlog")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "option",
-                                        { attrs: { value: "todo" } },
-                                        [_vm._v("To Do")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "option",
-                                        { attrs: { value: "done" } },
-                                        [_vm._v("Done ")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c(
-                                        "option",
-                                        { attrs: { value: "completed" } },
-                                        [_vm._v("Completed ")]
-                                      )
-                                    ]
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "btn btn-primary",
-                                    attrs: { type: "submit" }
-                                  },
-                                  [_vm._v("Add Task")]
-                                )
-                              ]
+                              [_vm._v("Previous")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col full next" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "bg-transparent btn-block",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.nextCat(task.id, task.category)
+                                  }
+                                }
+                              },
+                              [_vm._v("Next")]
                             )
                           ])
                         ])
                       ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body text-success" }, [
+                      _c("h5", { staticClass: "card-title" }, [
+                        _vm._v(_vm._s(task.title))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "card-footer bg-danger border-success" },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.destroy(task.id)
+                              }
+                            }
+                          },
+                          [_vm._v("Delete")]
+                        )
+                      ]
                     )
                   ]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn btn-secondary",
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.logout($event)
-                      }
-                    }
-                  },
-                  [_vm._v("Logout")]
                 )
               ])
-            ])
-          ]),
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col columns bg-transparent border-set" }, [
+          _vm._m(2),
           _vm._v(" "),
-          _c("main", { staticClass: "medium" }, [
-            _c("div", { staticClass: "row" }, [
-              _c(
-                "div",
-                { staticClass: "col columns bg-transparent border-set" },
-                [
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "col overflowing" },
-                    _vm._l(_vm.backlogs, function(task) {
-                      return _c("div", { staticClass: "row content" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card border-success mb-3",
-                            staticStyle: { width: "100%", "max-width": "18rem" }
-                          },
-                          [
+          _c(
+            "div",
+            { staticClass: "col overflowing" },
+            _vm._l(_vm.todos, function(task) {
+              return _c("div", { staticClass: "row content" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "card border-success mb-3",
+                    staticStyle: { width: "100%", "max-width": "18rem" }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "card-header bg-success border-success" },
+                      [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col full previous" }, [
                             _c(
-                              "div",
+                              "button",
                               {
-                                staticClass:
-                                  "card-header bg-success border-success"
-                              },
-                              [
-                                _c("div", { staticClass: "row" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "col full previous" },
-                                    [
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "bg-transparent btn-block",
-                                          on: {
-                                            click: function($event) {
-                                              $event.preventDefault()
-                                              return _vm.previousCat(
-                                                task.id,
-                                                task.category
-                                              )
-                                            }
-                                          }
-                                        },
-                                        [_vm._v("Previous")]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "col full next" }, [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "bg-transparent btn-block",
-                                        on: {
-                                          click: function($event) {
-                                            $event.preventDefault()
-                                            return _vm.nextCat(
-                                              task.id,
-                                              task.category
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Next")]
+                                staticClass: "bg-transparent btn-block",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.previousCat(
+                                      task.id,
+                                      task.category
                                     )
-                                  ])
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "card-body text-success" },
-                              [
-                                _c("h5", { staticClass: "card-title" }, [
-                                  _vm._v(_vm._s(task.title))
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "card-footer bg-danger border-success"
+                                  }
+                                }
                               },
-                              [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "bg-transparent btn-block",
-                                    on: {
-                                      click: function($event) {
-                                        $event.preventDefault()
-                                        return _vm.destroy(task.id)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("Delete")]
-                                )
-                              ]
+                              [_vm._v("Previous")]
                             )
-                          ]
-                        )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col full next" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "bg-transparent btn-block",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.nextCat(task.id, task.category)
+                                  }
+                                }
+                              },
+                              [_vm._v("Next")]
+                            )
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body text-success" }, [
+                      _c("h5", { staticClass: "card-title" }, [
+                        _vm._v(_vm._s(task.title))
                       ])
-                    }),
-                    0
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "col columns bg-transparent border-set" },
-                [
-                  _vm._m(4),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "col overflowing" },
-                    _vm._l(_vm.todos, function(task) {
-                      return _c("div", { staticClass: "row content" }, [
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "card-footer bg-danger border-success" },
+                      [
                         _c(
-                          "div",
+                          "button",
                           {
-                            staticClass: "card border-success mb-3",
-                            staticStyle: { width: "100%", "max-width": "18rem" }
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.destroy(task.id)
+                              }
+                            }
                           },
-                          [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "card-header bg-success border-success"
-                              },
-                              [
-                                _c("div", { staticClass: "row" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "col full previous" },
-                                    [
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "bg-transparent btn-block",
-                                          on: {
-                                            click: function($event) {
-                                              $event.preventDefault()
-                                              return _vm.previousCat(
-                                                task.id,
-                                                task.category
-                                              )
-                                            }
-                                          }
-                                        },
-                                        [_vm._v("Previous")]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "col full next" }, [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "bg-transparent btn-block",
-                                        on: {
-                                          click: function($event) {
-                                            $event.preventDefault()
-                                            return _vm.nextCat(
-                                              task.id,
-                                              task.category
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Next")]
-                                    )
-                                  ])
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "card-body text-success" },
-                              [
-                                _c("h5", { staticClass: "card-title" }, [
-                                  _vm._v(_vm._s(task.title))
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "card-footer bg-danger border-success"
-                              },
-                              [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "bg-transparent btn-block",
-                                    on: {
-                                      click: function($event) {
-                                        $event.preventDefault()
-                                        return _vm.destroy(task.id)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("Delete")]
-                                )
-                              ]
-                            )
-                          ]
+                          [_vm._v("Delete")]
                         )
-                      ])
-                    }),
-                    0
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "col columns bg-transparent border-set" },
-                [
-                  _vm._m(5),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "col overflowing" },
-                    _vm._l(_vm.dones, function(task) {
-                      return _c("div", { staticClass: "row content" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card border-success mb-3",
-                            staticStyle: { width: "100%", "max-width": "18rem" }
-                          },
-                          [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "card-header bg-success border-success"
-                              },
-                              [
-                                _c("div", { staticClass: "row" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "col full previous" },
-                                    [
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "bg-transparent btn-block",
-                                          on: {
-                                            click: function($event) {
-                                              $event.preventDefault()
-                                              return _vm.previousCat(
-                                                task.id,
-                                                task.category
-                                              )
-                                            }
-                                          }
-                                        },
-                                        [_vm._v("Previous")]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "col full next" }, [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "bg-transparent btn-block",
-                                        on: {
-                                          click: function($event) {
-                                            $event.preventDefault()
-                                            return _vm.nextCat(
-                                              task.id,
-                                              task.category
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Next")]
-                                    )
-                                  ])
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "card-body text-success" },
-                              [
-                                _c("h5", { staticClass: "card-title" }, [
-                                  _vm._v(_vm._s(task.title))
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "card-footer bg-danger border-success"
-                              },
-                              [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "bg-transparent btn-block",
-                                    on: {
-                                      click: function($event) {
-                                        $event.preventDefault()
-                                        return _vm.destroy(task.id)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("Delete")]
-                                )
-                              ]
-                            )
-                          ]
-                        )
-                      ])
-                    }),
-                    0
-                  )
-                ]
-              ),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "col columns bg-transparent border-set" },
-                [
-                  _vm._m(6),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "col overflowing" },
-                    _vm._l(_vm.completeds, function(task) {
-                      return _c("div", { staticClass: "row content" }, [
-                        _c(
-                          "div",
-                          {
-                            staticClass: "card border-success mb-3",
-                            staticStyle: { width: "100%", "max-width": "18rem" }
-                          },
-                          [
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "card-header bg-success border-success"
-                              },
-                              [
-                                _c("div", { staticClass: "row" }, [
-                                  _c(
-                                    "div",
-                                    { staticClass: "col full previous" },
-                                    [
-                                      _c(
-                                        "button",
-                                        {
-                                          staticClass:
-                                            "bg-transparent btn-block",
-                                          on: {
-                                            click: function($event) {
-                                              $event.preventDefault()
-                                              return _vm.previousCat(
-                                                task.id,
-                                                task.category
-                                              )
-                                            }
-                                          }
-                                        },
-                                        [_vm._v("Previous")]
-                                      )
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("div", { staticClass: "col full next" }, [
-                                    _c(
-                                      "button",
-                                      {
-                                        staticClass: "bg-transparent btn-block",
-                                        on: {
-                                          click: function($event) {
-                                            $event.preventDefault()
-                                            return _vm.nextCat(
-                                              task.id,
-                                              task.category
-                                            )
-                                          }
-                                        }
-                                      },
-                                      [_vm._v("Next")]
-                                    )
-                                  ])
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              { staticClass: "card-body text-success" },
-                              [
-                                _c("h5", { staticClass: "card-title" }, [
-                                  _vm._v(_vm._s(task.title))
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "card-footer bg-danger border-success"
-                              },
-                              [
-                                _c(
-                                  "button",
-                                  {
-                                    staticClass: "bg-transparent btn-block",
-                                    on: {
-                                      click: function($event) {
-                                        $event.preventDefault()
-                                        return _vm.destroy(task.id)
-                                      }
-                                    }
-                                  },
-                                  [_vm._v("Delete")]
-                                )
-                              ]
-                            )
-                          ]
-                        )
-                      ])
-                    }),
-                    0
-                  )
-                ]
-              )
-            ])
-          ]),
+                      ]
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col columns bg-transparent border-set" }, [
+          _vm._m(3),
           _vm._v(" "),
-          _vm._m(7)
+          _c(
+            "div",
+            { staticClass: "col overflowing" },
+            _vm._l(_vm.dones, function(task) {
+              return _c("div", { staticClass: "row content" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "card border-success mb-3",
+                    staticStyle: { width: "100%", "max-width": "18rem" }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "card-header bg-success border-success" },
+                      [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col full previous" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "bg-transparent btn-block",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.previousCat(
+                                      task.id,
+                                      task.category
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v("Previous")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col full next" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "bg-transparent btn-block",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.nextCat(task.id, task.category)
+                                  }
+                                }
+                              },
+                              [_vm._v("Next")]
+                            )
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body text-success" }, [
+                      _c("h5", { staticClass: "card-title" }, [
+                        _vm._v(_vm._s(task.title))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "card-footer bg-danger border-success" },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.destroy(task.id)
+                              }
+                            }
+                          },
+                          [_vm._v("Delete")]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col columns bg-transparent border-set" }, [
+          _vm._m(4),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col overflowing" },
+            _vm._l(_vm.completeds, function(task) {
+              return _c("div", { staticClass: "row content" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "card border-success mb-3",
+                    staticStyle: { width: "100%", "max-width": "18rem" }
+                  },
+                  [
+                    _c(
+                      "div",
+                      { staticClass: "card-header bg-success border-success" },
+                      [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col full previous" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "bg-transparent btn-block",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.previousCat(
+                                      task.id,
+                                      task.category
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v("Previous")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col full next" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "bg-transparent btn-block",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.nextCat(task.id, task.category)
+                                  }
+                                }
+                              },
+                              [_vm._v("Next")]
+                            )
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body text-success" }, [
+                      _c("h5", { staticClass: "card-title" }, [
+                        _vm._v(_vm._s(task.title))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "card-footer bg-danger border-success" },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.destroy(task.id)
+                              }
+                            }
+                          },
+                          [_vm._v("Delete")]
+                        )
+                      ]
+                    )
+                  ]
+                )
+              ])
+            }),
+            0
+          )
         ])
+      ])
+    ]),
+    _vm._v(" "),
+    _vm._m(5)
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-center mb-4" }, [
-      _c("img", {
-        staticClass: "mb-4",
-        attrs: {
-          src: "/hacktiv8.7e952a32.png",
-          alt: "",
-          width: "72",
-          height: "72"
-        }
-      }),
-      _vm._v(" "),
-      _c("h1", [_vm._v("Kanban Board")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c(
-        "h5",
-        { staticClass: "modal-title", attrs: { id: "staticBackdropLabel" } },
-        [_vm._v("Register")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -10507,6 +10387,214 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
+            api.createRecord('$f9400b', $f9400b);
+          } else {
+            api.reload('$f9400b', $f9400b);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"./../hacktiv8.png":[["hacktiv8.7e952a32.png","src/hacktiv8.png"],"src/hacktiv8.png"],"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _LoginPage = _interopRequireDefault(require("./views/LoginPage"));
+
+var _MainPage = _interopRequireDefault(require("./views/MainPage"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: "App",
+  components: {
+    LoginPage: _LoginPage.default,
+    MainPage: _MainPage.default
+  },
+  data: function data() {
+    return {
+      //localhost
+      baseUrl: 'http://localhost:3000',
+      //firebase
+      // baseUrl: 'https://kanban-server-robin.herokuapp.com',
+      isLogin: false,
+      user: {
+        email: "",
+        password: ""
+      },
+      newUser: {
+        email: "",
+        password: "",
+        confirm: ""
+      },
+      task: {
+        title: "",
+        category: ""
+      },
+      tasks: [],
+      backlogs: [],
+      todos: [],
+      dones: [],
+      completeds: []
+    };
+  },
+  methods: {
+    changeLogin: function changeLogin(status) {
+      this.isLogin = status;
+    },
+    getTasks: function getTasks() {
+      var _this = this;
+
+      this.tasks = [];
+      this.backlogs = [];
+      this.todos = [];
+      this.dones = [];
+      this.completeds = [];
+      axios({
+        method: 'GET',
+        url: this.baseUrl + '/tasks',
+        headers: {
+          access_token: localStorage.token
+        }
+      }).then(function (result) {
+        _this.tasks = result.data.result;
+        console.log('task', _this.tasks);
+
+        _this.separateCategory();
+      }).catch(function (err) {
+        console.log(err);
+      });
+    },
+    separateCategory: function separateCategory() {
+      for (var i = 0; i < this.tasks.length; i++) {
+        if (this.tasks[i].category == 'backlog') {
+          this.backlogs.push(this.tasks[i]);
+        } else if (this.tasks[i].category == 'todo') {
+          this.todos.push(this.tasks[i]);
+        } else if (this.tasks[i].category == 'done') {
+          this.dones.push(this.tasks[i]);
+        } else if (this.tasks[i].category == 'completed') {
+          this.completeds.push(this.tasks[i]);
+        }
+      }
+    }
+  },
+  created: function created() {
+    if (localStorage.token) {
+      this.isLogin = true;
+      this.getTasks();
+    }
+  }
+};
+exports.default = _default;
+        var $229e61 = exports.default || module.exports;
+      
+      if (typeof $229e61 === 'function') {
+        $229e61 = $229e61.options;
+      }
+    
+        /* template */
+        Object.assign($229e61, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container-fluid" }, [
+    !_vm.isLogin
+      ? _c(
+          "div",
+          [
+            _c("login-page", {
+              attrs: {
+                baseUrl: _vm.baseUrl,
+                isLogin: _vm.isLogin,
+                user: _vm.user,
+                newUser: _vm.newUser
+              },
+              on: { getTasks: _vm.getTasks, changeLogin: _vm.changeLogin }
+            })
+          ],
+          1
+        )
+      : _c(
+          "div",
+          [
+            _c("main-page", {
+              attrs: {
+                baseUrl: _vm.baseUrl,
+                task: _vm.task,
+                tasks: _vm.tasks,
+                backlogs: _vm.backlogs,
+                todos: _vm.todos,
+                dones: _vm.dones,
+                completeds: _vm.completeds
+              },
+              on: { getTasks: _vm.getTasks, changeLogin: _vm.changeLogin }
+            })
+          ],
+          1
+        )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
             api.createRecord('$229e61', $229e61);
           } else {
             api.reload('$229e61', $229e61);
@@ -10520,7 +10608,7 @@ render._withStripped = true
       
       }
     })();
-},{"./hacktiv8.png":[["hacktiv8.7e952a32.png","src/hacktiv8.png"],"src/hacktiv8.png"],"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/main.js":[function(require,module,exports) {
+},{"./views/LoginPage":"src/views/LoginPage.vue","./views/MainPage":"src/views/MainPage.vue","_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/main.js":[function(require,module,exports) {
 "use strict";
 
 var _vue = _interopRequireDefault(require("vue"));
@@ -10562,7 +10650,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56292" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49778" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
