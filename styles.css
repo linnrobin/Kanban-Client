@@ -9,12 +9,13 @@
 }
 
 body {
-    background-color: black;
+    background-color: orange;
 }
 
 nav {
-    background-color: #f25f5c;
-    height:10vh
+    background-color: top;
+    height:10vh;
+    align-content: center;
 }
 
 .row {
@@ -76,31 +77,31 @@ nav {
 }
 
 #bottom {
-    background-color: #ffe066;
+    background-color: orange;
     height: 10vh;
 }
 
-#story {
+#backlog {
     background-color: #f5f5f5;
     border-radius: 8px 8px 0 0
 }
 
-#start {
+#todo {
     background-color: #f25f5c;
     border-radius: 8px 8px 0 0
 }
 
-#work {
+#done {
     background-color: #ffe066;
     border-radius: 8px 8px 0 0
 }
 
-#test {
+/* #test {
     background-color: #247ba0;
     border-radius: 8px 8px 0 0;
-}
+} */
 
-#done {
+#completed {
     background-color: #70c1b3;
     border-radius: 8px 8px 0 0
 }
