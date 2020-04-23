@@ -9310,9 +9310,13 @@ var _default = {
     }
   },
   mounted: function mounted() {
-    gapi.signin2.render('google-signin-button', {
-      onsuccess: this.onSignIn
-    });
+    var _this3 = this;
+
+    setTimeout(function () {
+      gapi.signin2.render('google-signin-button', {
+        onsuccess: _this3.onSignIn
+      });
+    }, 100);
   }
 };
 exports.default = _default;
@@ -9637,106 +9641,9 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var _default = {
   name: "MainContent",
-  props: ['baseUrl', 'task', 'tasks', 'backlogs', 'todos', 'dones', 'completeds'],
+  props: ['baseUrl', 'task', 'tasks', 'categories'],
   methods: {
     destroy: function destroy(id) {
       var _this = this;
@@ -9758,6 +9665,7 @@ var _default = {
     nextCat: function nextCat(id, category) {
       var _this2 = this;
 
+      console.log(id, category);
       var nextCategory = '';
 
       if (category === 'backlog') {
@@ -9842,474 +9750,131 @@ exports.default = _default;
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col columns bg-transparent border-set" }, [
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
+  return _c(
+    "div",
+    { staticClass: "row" },
+    _vm._l(_vm.categories, function(category, index) {
+      return _c(
         "div",
-        { staticClass: "col overflowing" },
-        _vm._l(_vm.backlogs, function(task) {
-          return _c("div", { key: task.id, staticClass: "row content" }, [
-            _c(
-              "div",
-              {
-                staticClass: "card border-success mb-3",
-                staticStyle: { width: "100%", "max-width": "18rem" }
-              },
-              [
+        { key: index, staticClass: "col columns bg-transparent border-set" },
+        [
+          _c("div", { staticClass: "row title", attrs: { id: index } }, [
+            _c("h3", [_vm._v(_vm._s(index))])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col overflowing" },
+            _vm._l(category, function(task) {
+              return _c("div", { key: task.id, staticClass: "row content" }, [
                 _c(
                   "div",
-                  { staticClass: "card-header bg-success border-success" },
-                  [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col full previous" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.previousCat(task.id, task.category)
-                              }
-                            }
-                          },
-                          [_vm._v("<")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col full edit" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            attrs: {
-                              "data-toggle": "modal",
-                              "data-target": "#editTask"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.editTask(task.id, task.title)
-                              }
-                            }
-                          },
-                          [_vm._v("Edit")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col full next" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.nextCat(task.id, task.category)
-                              }
-                            }
-                          },
-                          [_vm._v(">")]
-                        )
-                      ])
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body text-success" }, [
-                  _c("h5", { staticClass: "card-title" }, [
-                    _vm._v(_vm._s(task.title))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "card-footer bg-danger border-success" },
+                  {
+                    staticClass: "card border-success mb-3",
+                    staticStyle: { width: "100%", "max-width": "18rem" }
+                  },
                   [
                     _c(
-                      "button",
-                      {
-                        staticClass: "bg-transparent btn-block",
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.destroy(task.id)
-                          }
-                        }
-                      },
-                      [_vm._v("Delete")]
+                      "div",
+                      { staticClass: "card-header bg-success border-success" },
+                      [
+                        _c("div", { staticClass: "row" }, [
+                          _c("div", { staticClass: "col full previous" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "bg-transparent btn-block",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.previousCat(
+                                      task.id,
+                                      task.category
+                                    )
+                                  }
+                                }
+                              },
+                              [_vm._v("<")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col full edit" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "bg-transparent btn-block",
+                                attrs: {
+                                  "data-toggle": "modal",
+                                  "data-target": "#editTask"
+                                },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.editTask(task.id, task.title)
+                                  }
+                                }
+                              },
+                              [_vm._v("Edit")]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "col full next" }, [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "bg-transparent btn-block",
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.nextCat(task.id, task.category)
+                                  }
+                                }
+                              },
+                              [_vm._v(">")]
+                            )
+                          ])
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body text-success" }, [
+                      _c("h5", { staticClass: "card-title" }, [
+                        _vm._v(_vm._s(task.title))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      { staticClass: "card-footer bg-danger border-success" },
+                      [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.destroy(task.id)
+                              }
+                            }
+                          },
+                          [_vm._v("Delete")]
+                        )
+                      ]
                     )
                   ]
                 )
-              ]
-            )
-          ])
-        }),
-        0
+              ])
+            }),
+            0
+          )
+        ]
       )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col columns bg-transparent border-set" }, [
-      _vm._m(1),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col overflowing" },
-        _vm._l(_vm.todos, function(task) {
-          return _c("div", { key: task.id, staticClass: "row content" }, [
-            _c(
-              "div",
-              {
-                staticClass: "card border-success mb-3",
-                staticStyle: { width: "100%", "max-width": "18rem" }
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "card-header bg-success border-success" },
-                  [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col full previous" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.previousCat(task.id, task.category)
-                              }
-                            }
-                          },
-                          [_vm._v("<")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col full edit" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            attrs: {
-                              "data-toggle": "modal",
-                              "data-target": "#editTask"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.editTask(task.id, task.title)
-                              }
-                            }
-                          },
-                          [_vm._v("Edit")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col full next" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.nextCat(task.id, task.category)
-                              }
-                            }
-                          },
-                          [_vm._v(">")]
-                        )
-                      ])
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body text-success" }, [
-                  _c("h5", { staticClass: "card-title" }, [
-                    _vm._v(_vm._s(task.title))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "card-footer bg-danger border-success" },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "bg-transparent btn-block",
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.destroy(task.id)
-                          }
-                        }
-                      },
-                      [_vm._v("Delete")]
-                    )
-                  ]
-                )
-              ]
-            )
-          ])
-        }),
-        0
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col columns bg-transparent border-set" }, [
-      _vm._m(2),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col overflowing" },
-        _vm._l(_vm.dones, function(task) {
-          return _c("div", { key: task.id, staticClass: "row content" }, [
-            _c(
-              "div",
-              {
-                staticClass: "card border-success mb-3",
-                staticStyle: { width: "100%", "max-width": "18rem" }
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "card-header bg-success border-success" },
-                  [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col full previous" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.previousCat(task.id, task.category)
-                              }
-                            }
-                          },
-                          [_vm._v("<")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col full edit" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            attrs: {
-                              "data-toggle": "modal",
-                              "data-target": "#editTask"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.editTask(task.id, task.title)
-                              }
-                            }
-                          },
-                          [_vm._v("Edit")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col full next" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.nextCat(task.id, task.category)
-                              }
-                            }
-                          },
-                          [_vm._v(">")]
-                        )
-                      ])
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body text-success" }, [
-                  _c("h5", { staticClass: "card-title" }, [
-                    _vm._v(_vm._s(task.title))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "card-footer bg-danger border-success" },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "bg-transparent btn-block",
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.destroy(task.id)
-                          }
-                        }
-                      },
-                      [_vm._v("Delete")]
-                    )
-                  ]
-                )
-              ]
-            )
-          ])
-        }),
-        0
-      )
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "col columns bg-transparent border-set" }, [
-      _vm._m(3),
-      _vm._v(" "),
-      _c(
-        "div",
-        { staticClass: "col overflowing" },
-        _vm._l(_vm.completeds, function(task) {
-          return _c("div", { key: task.id, staticClass: "row content" }, [
-            _c(
-              "div",
-              {
-                staticClass: "card border-success mb-3",
-                staticStyle: { width: "100%", "max-width": "18rem" }
-              },
-              [
-                _c(
-                  "div",
-                  { staticClass: "card-header bg-success border-success" },
-                  [
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col full previous" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.previousCat(task.id, task.category)
-                              }
-                            }
-                          },
-                          [_vm._v("<")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col full edit" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            attrs: {
-                              "data-toggle": "modal",
-                              "data-target": "#editTask"
-                            },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.editTask(task.id, task.title)
-                              }
-                            }
-                          },
-                          [_vm._v("Edit")]
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col full next" }, [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.nextCat(task.id, task.category)
-                              }
-                            }
-                          },
-                          [_vm._v(">")]
-                        )
-                      ])
-                    ])
-                  ]
-                ),
-                _vm._v(" "),
-                _c("div", { staticClass: "card-body text-success" }, [
-                  _c("h5", { staticClass: "card-title" }, [
-                    _vm._v(_vm._s(task.title))
-                  ])
-                ]),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  { staticClass: "card-footer bg-danger border-success" },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "bg-transparent btn-block",
-                        on: {
-                          click: function($event) {
-                            $event.preventDefault()
-                            return _vm.destroy(task.id)
-                          }
-                        }
-                      },
-                      [_vm._v("Delete")]
-                    )
-                  ]
-                )
-              ]
-            )
-          ])
-        }),
-        0
-      )
-    ])
-  ])
+    }),
+    0
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row title", attrs: { id: "backlog" } }, [
-      _c("h3", [_vm._v("Backlog")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row title", attrs: { id: "todo" } }, [
-      _c("h3", [_vm._v("To Do")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row title", attrs: { id: "done" } }, [
-      _c("h3", [_vm._v("Done")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row title", attrs: { id: "completed" } }, [
-      _c("h3", [_vm._v("Completed")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
           return {
@@ -10448,24 +10013,24 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
 var _default = {
   name: 'MainPage',
-  props: ['baseUrl', 'task', 'tasks', 'backlogs', 'todos', 'dones', 'completeds'],
+  props: ['baseUrl', 'task', 'tasks', 'categories'],
   components: {
     MainContent: _MainContent.default
   },
   methods: {
     logout: function logout() {
-      localStorage.removeItem('token');
-      this.$emit('changeLogin', false);
       var auth2 = gapi.auth2.getAuthInstance();
       auth2.signOut().then(function () {
         console.log('User signed out.');
       });
       this.$toasted.success('Successfully logged out').goAway(5000);
+      localStorage.removeItem('token');
+      this.$emit('changeLogin', false);
+    },
+    emptyAdd: function emptyAdd() {
+      this.task.title = '';
     },
     addTask: function addTask() {
       var _this = this;
@@ -10556,6 +10121,12 @@ exports.default = _default;
                 type: "button",
                 "data-toggle": "modal",
                 "data-target": "#addTask"
+              },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.emptyAdd($event)
+                }
               }
             },
             [
@@ -10828,10 +10399,7 @@ exports.default = _default;
             baseUrl: _vm.baseUrl,
             task: _vm.task,
             tasks: _vm.tasks,
-            backlogs: _vm.backlogs,
-            todos: _vm.todos,
-            dones: _vm.dones,
-            completeds: _vm.completeds
+            categories: _vm.categories
           },
           on: { getTasks: _vm.getTasks }
         })
@@ -10980,9 +10548,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
-//
-//
-//
 var _default = {
   name: "App",
   components: {
@@ -11011,10 +10576,12 @@ var _default = {
         category: ""
       },
       tasks: [],
-      backlogs: [],
-      todos: [],
-      dones: [],
-      completeds: []
+      categories: {
+        backlog: [],
+        todo: [],
+        done: [],
+        completed: []
+      }
     };
   },
   methods: {
@@ -11025,10 +10592,10 @@ var _default = {
       var _this = this;
 
       this.tasks = [];
-      this.backlogs = [];
-      this.todos = [];
-      this.dones = [];
-      this.completeds = [];
+      this.categories.backlog = [];
+      this.categories.todo = [];
+      this.categories.done = [];
+      this.categories.completed = [];
       axios({
         method: 'GET',
         url: this.baseUrl + '/tasks',
@@ -11047,13 +10614,13 @@ var _default = {
     separateCategory: function separateCategory() {
       for (var i = 0; i < this.tasks.length; i++) {
         if (this.tasks[i].category == 'backlog') {
-          this.backlogs.push(this.tasks[i]);
+          this.categories.backlog.push(this.tasks[i]);
         } else if (this.tasks[i].category == 'todo') {
-          this.todos.push(this.tasks[i]);
+          this.categories.todo.push(this.tasks[i]);
         } else if (this.tasks[i].category == 'done') {
-          this.dones.push(this.tasks[i]);
+          this.categories.done.push(this.tasks[i]);
         } else if (this.tasks[i].category == 'completed') {
-          this.completeds.push(this.tasks[i]);
+          this.categories.completed.push(this.tasks[i]);
         }
       }
     }
@@ -11103,10 +10670,7 @@ exports.default = _default;
                 baseUrl: _vm.baseUrl,
                 task: _vm.task,
                 tasks: _vm.tasks,
-                backlogs: _vm.backlogs,
-                todos: _vm.todos,
-                dones: _vm.dones,
-                completeds: _vm.completeds
+                categories: _vm.categories
               },
               on: { getTasks: _vm.getTasks, changeLogin: _vm.changeLogin }
             })
@@ -11197,7 +10761,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63595" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49776" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

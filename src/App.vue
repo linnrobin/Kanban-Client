@@ -16,12 +16,9 @@
             :baseUrl='baseUrl'
             :task='task'
             :tasks='tasks'
-            :backlogs='backlogs'
-            :todos='todos'
-            :dones='dones'
-            :completeds='completeds'
             @getTasks='getTasks'
             @changeLogin='changeLogin'
+            :categories='categories'
           ></main-page>
         </div>
 
@@ -63,10 +60,12 @@ export default {
                 category: ""
             },
             tasks: [],
-            backlogs: [],
-            todos: [],
-            dones: [],
-            completeds: []
+            categories: {
+              backlog: [],
+              todo: [],
+              done: [],
+              completed: []
+            }
         }
     },
     methods: {
@@ -76,10 +75,10 @@ export default {
 
       getTasks() {
         this.tasks = []
-        this.backlogs = []
-        this.todos = []
-        this.dones = []
-        this.completeds = []
+        this.categories.backlog = []
+        this.categories.todo = []
+        this.categories.done = []
+        this.categories.completed = []
 
         axios({
           method: 'GET',
@@ -100,13 +99,13 @@ export default {
       separateCategory(){
         for( let i = 0; i < this.tasks.length; i++) {
           if(this.tasks[i].category == 'backlog') {
-            this.backlogs.push(this.tasks[i])
+            this.categories.backlog.push(this.tasks[i])
           } else if (this.tasks[i].category == 'todo') {
-            this.todos.push(this.tasks[i])
+            this.categories.todo.push(this.tasks[i])
           } else if (this.tasks[i].category == 'done') {
-            this.dones.push(this.tasks[i])
+            this.categories.done.push(this.tasks[i])
           } else if (this.tasks[i].category == 'completed') {
-            this.completeds.push(this.tasks[i])
+            this.categories.completed.push(this.tasks[i])
           }
         }
       }

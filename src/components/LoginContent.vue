@@ -89,10 +89,12 @@ export default {
       }
     },
         mounted() {
-            gapi.signin2.render('google-signin-button', {
-                onsuccess: this.onSignIn
-        })
-    }
+            setTimeout(() => {  
+                gapi.signin2.render('google-signin-button', {
+                    onsuccess: this.onSignIn
+                })
+             }, 100);
+        }
 }
 </script>
 

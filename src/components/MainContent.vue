@@ -1,12 +1,11 @@
 <template>
                 <div class="row">
- 
-                    <div class="col columns bg-transparent border-set">
-                        <div class="row title" id="backlog">
-                            <h3>Backlog</h3>
+                    <div class="col columns bg-transparent border-set" v-for="(category,index) in categories" :key="index">
+                        <div class="row title" :id="index">
+                            <h3>{{index}}</h3>
                         </div>
                         <div class ="col overflowing">
-                        <div class="row content" v-for="task in backlogs" :key="task.id">
+                        <div class="row content" v-for="task in category" :key="task.id">
                             <!--START CARD HERE -->
                             <div class="card border-success mb-3" style="width: 100%; max-width: 18rem;">
                                 <div class="card-header bg-success border-success">
@@ -33,102 +32,6 @@
                         </div>
                         </div>
                     </div>
-                    <div class="col columns bg-transparent border-set">
-                        <div class="row title" id="todo">
-                            <h3>To Do</h3>
-                        </div>
-                        <div class ="col overflowing">
-                        <div class="row content" v-for="task in todos" :key="task.id">
-                            <!--START CARD HERE -->
-                            <div class="card border-success mb-3" style="width: 100%; max-width: 18rem;">
-                                <div class="card-header bg-success border-success">
-                                    <div class="row">
-                                        <div class="col full previous">
-                                            <button class="bg-transparent btn-block" @click.prevent="previousCat(task.id, task.category)"><</button>
-                                        </div>
-                                        <div class="col full edit">    
-                                            <button class="bg-transparent btn-block" @click.prevent="editTask(task.id, task.title)" data-toggle="modal" data-target="#editTask">Edit</button>
-                                        </div>
-                                        <div class="col full next">    
-                                            <button class="bg-transparent btn-block" @click.prevent="nextCat(task.id, task.category)">></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body text-success">
-                                    <h5 class="card-title">{{ task.title }}</h5>
-                                  </div>
-                                  <div class="card-footer bg-danger border-success">
-                                      <button class="bg-transparent btn-block" @click.prevent="destroy(task.id)" >Delete</button>
-                                  </div>
-                              </div>
-                              <!-- END OF CARD HERE -->                        
-                        </div>
-                        </div>
-                    </div>
-                    <div class="col columns bg-transparent border-set">
-                        <div class="row title" id="done">
-                            <h3>Done</h3>
-                        </div>
-                        <div class ="col overflowing">
-                        <div class="row content" v-for="task in dones" :key="task.id">
-                            <!--START CARD HERE -->
-                            <div class="card border-success mb-3" style="width: 100%; max-width: 18rem;">
-                                <div class="card-header bg-success border-success">
-                                    <div class="row">
-                                        <div class="col full previous">
-                                            <button class="bg-transparent btn-block" @click.prevent="previousCat(task.id, task.category)"><</button>
-                                        </div>
-                                        <div class="col full edit">    
-                                            <button class="bg-transparent btn-block" @click.prevent="editTask(task.id, task.title)" data-toggle="modal" data-target="#editTask">Edit</button>
-                                        </div>
-                                        <div class="col full next">    
-                                            <button class="bg-transparent btn-block" @click.prevent="nextCat(task.id, task.category)">></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body text-success">
-                                    <h5 class="card-title">{{ task.title }}</h5>
-                                  </div>
-                                  <div class="card-footer bg-danger border-success">
-                                      <button class="bg-transparent btn-block" @click.prevent="destroy(task.id)" >Delete</button>
-                                  </div>
-                              </div>
-                              <!-- END OF CARD HERE -->
-                        </div>
-                        </div>
-                    </div>
-                    <div class="col columns bg-transparent border-set">
-                        <div class="row title" id="completed">
-                            <h3>Completed</h3>
-                        </div>
-                        <div class ="col overflowing">
-                        <div class="row content" v-for="task in completeds" :key="task.id">
-                            <!--START CARD HERE -->
-                            <div class="card border-success mb-3" style="width: 100%; max-width: 18rem;">
-                                <div class="card-header bg-success border-success">
-                                    <div class="row">
-                                        <div class="col full previous">
-                                            <button class="bg-transparent btn-block" @click.prevent="previousCat(task.id, task.category)"><</button>
-                                        </div>
-                                        <div class="col full edit">    
-                                            <button class="bg-transparent btn-block" @click.prevent="editTask(task.id, task.title)" data-toggle="modal" data-target="#editTask">Edit</button>
-                                        </div>
-                                        <div class="col full next">    
-                                            <button class="bg-transparent btn-block" @click.prevent="nextCat(task.id, task.category)">></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body text-success">
-                                    <h5 class="card-title">{{ task.title }}</h5>
-                                  </div>
-                                  <div class="card-footer bg-danger border-success">
-                                      <button class="bg-transparent btn-block" @click.prevent="destroy(task.id)" >Delete</button>
-                                  </div>
-                              </div>
-                              <!-- END OF CARD HERE -->                        
-                        </div>
-                        </div>
-                    </div>
                 </div> 
 </template>
 
@@ -139,10 +42,7 @@ export default {
         'baseUrl',
         'task',
         'tasks',
-        'backlogs',
-        'todos',
-        'dones',
-        'completeds'
+        'categories'
     ], 
     methods: {
         destroy(id) {
@@ -162,6 +62,7 @@ export default {
           })
       },
       nextCat(id, category) {
+        console.log(id,category)
         let nextCategory = ''
 
         if (category === 'backlog') {

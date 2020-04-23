@@ -7,7 +7,7 @@
                     <h1> Kanban Board </h1>
                     <div>
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTask">
+                        <button @click.prevent="emptyAdd" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTask">
                             Add Task
                         </button>
             
@@ -78,11 +78,8 @@
                     :baseUrl='baseUrl'
                     :task='task'
                     :tasks='tasks'
-                    :backlogs='backlogs'
-                    :todos='todos'
-                    :dones='dones'
-                    :completeds='completeds'
                     @getTasks='getTasks'
+                    :categories='categories'
                 />
             </main>
             <!-- END OF MAIN PAGE -->  
@@ -104,23 +101,23 @@ export default {
         'baseUrl',
         'task',
         'tasks',
-        'backlogs',
-        'todos',
-        'dones',
-        'completeds'
+        'categories'
     ], 
     components: {
       MainContent
     },
     methods: {
         logout() {
-            localStorage.removeItem('token')
-            this.$emit('changeLogin', false)
             var auth2 = gapi.auth2.getAuthInstance()
             auth2.signOut().then(function () {
               console.log('User signed out.')
             })
             this.$toasted.success('Successfully logged out').goAway(5000)
+            localStorage.removeItem('token')
+            this.$emit('changeLogin', false)
+      },
+      emptyAdd () {
+        this.task.title = ''
       },
       addTask() {
         axios({
