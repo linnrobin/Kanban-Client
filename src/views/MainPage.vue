@@ -49,6 +49,31 @@
                           <button @click.prevent="logout" class="btn btn-secondary">Logout</button>
                     </div>
                 </nav>    
+
+                          <!-- Modal -->
+                          <div class="modal fade" id="editTask" data-backdrop="" tabindex="-1" role="dialog" aria-labelledby="taskLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="taskLabel">Edit Task</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <form class="form-signin" @submit.prevent="updateTask(task, task.title)">
+                                      <div class="form-label-group">
+                                          <input v-model="task.title" type="text" id="editTitle" class="form-control" placeholder="Task Title" required autofocus>
+                                          <label for="editTitle">Task Title</label>
+                                      </div>
+                                      <button class="btn btn-primary" type="submit">Edit Task</button>
+                                  </form>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- END OF MODAL -->  
+
             </header>
             <main class="medium">
                 <div class="row">
@@ -63,10 +88,13 @@
                                 <div class="card-header bg-success border-success">
                                     <div class="row">
                                         <div class="col full previous">
-                                            <button class="bg-transparent btn-block" @click.prevent="previousCat(task.id, task.category)">Previous</button>
+                                            <button class="bg-transparent btn-block" @click.prevent="previousCat(task.id, task.category)">  <  </button>
+                                        </div>
+                                        <div class="col full edit">    
+                                            <button class="bg-transparent btn-block" @click.prevent="editTask(task.id, task.title)" data-toggle="modal" data-target="#editTask">Edit</button>
                                         </div>
                                         <div class="col full next">    
-                                            <button class="bg-transparent btn-block" @click.prevent="nextCat(task.id, task.category)">Next</button>
+                                            <button class="bg-transparent btn-block" @click.prevent="nextCat(task.id, task.category)">  >  </button>
                                         </div>
                                     </div>
                                 </div>
@@ -201,6 +229,7 @@ export default {
             auth2.signOut().then(function () {
               console.log('User signed out.')
             })
+            this.$toasted.success('Successfully logged out').goAway(5000)
       },
       addTask() {
         axios({
@@ -219,9 +248,10 @@ export default {
             this.task.category = ''
             this.$emit('getTasks')
             $('#addTask').modal('hide')
+            this.$toasted.success('Successfully added task').goAway(5000)
           })
           .catch( err => {
-            console.log(err)
+            this.$toasted.error(err.response.data.errors[0].message).goAway(5000)
           })
       },
       destroy(id) {
@@ -234,9 +264,10 @@ export default {
         })
           .then( result => {
             this.$emit('getTasks')
+            this.$toasted.success('Successfully deleted task').goAway(5000)
           })
           .catch( err => {
-            console.log(err)
+            console.log(err.response)
           })
       },
       nextCat(id, category) {
@@ -251,7 +282,7 @@ export default {
         }
 
         if (category === 'completed') {
-          console.log('Cannot next because already in final state')  
+            this.$toasted.error('Cannot next because already in final state').goAway(5000)  
         } else {
           axios({
             method: 'PUT',
@@ -265,9 +296,10 @@ export default {
           })
             .then( result => {
             this.$emit('getTasks')
+            this.$toasted.success('Task Status Updated').goAway(5000)
             })
             .catch( err => {
-              console.log(err)
+              console.log(err.response)
             })
         }
       },
@@ -283,7 +315,7 @@ export default {
         }
 
         if (category === 'backlog') {
-          console.log('Cannot previous because already in final state')  
+          this.$toasted.error('Cannot previous because already in final state').goAway(5000)    
         } else {
           axios({
             method: 'PUT',
@@ -297,13 +329,37 @@ export default {
           })
             .then( result => {
                 this.$emit('getTasks')
+                this.$toasted.success('Task Status Updated').goAway(5000)
             })
             .catch( err => {
-              console.log(err)
+              console.log(err.response)
             })
         }
+      },
+      editTask(id, title) {
+        this.task.title = title
+        this.task.id = id
+      },
+      updateTask(id, title) {
+        axios({
+            method: 'PUT',
+            url: this.baseUrl + '/tasks/' + id.id,
+            data: {
+              title
+            },
+            headers: {
+              access_token: localStorage.token
+            }
+          })
+            .then( result => {
+                this.$emit('getTasks')
+                this.$toasted.success('Task Title Updated').goAway(5000)
+                $('#editTask').modal('hide')
+            })
+            .catch( err => {
+              console.log(err.response)
+            })
       }
-
     }
 }
 </script>

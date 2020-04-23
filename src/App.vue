@@ -1,5 +1,6 @@
 <template>
       <div class = "container-fluid">
+        
         <div v-if="!isLogin"> 
           <login-page
             :baseUrl='baseUrl'
@@ -57,6 +58,7 @@ export default {
                 confirm: ""
             },
             task: {
+                id: "",
                 title: "",
                 category: ""
             },
@@ -92,7 +94,7 @@ export default {
             this.separateCategory()
           })
           .catch( err => {
-            console.log(err)
+            console.log(err.response)
           })
       },
       separateCategory(){

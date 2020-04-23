@@ -73,7 +73,21 @@ export default {
       'user',
       'newUser'
     ],
+    data() {
+      return {
+        dismissSecs: 10,
+        dismissCountDown: 0,
+        showDismissibleAlert: false
+      }
+    },
     methods: {
+      countDownChanged(dismissCountDown) {
+        this.dismissCountDown = dismissCountDown
+      },
+      showAlert() {
+        this.dismissCountDown = this.dismissSecs
+      },
+
       login() {
           axios({
             method: 'POST',
@@ -89,9 +103,10 @@ export default {
               this.user.password = ''
               this.$emit('changeLogin', true)    
               this.$emit('getTasks')
+              this.$toasted.success('Successfully logged in').goAway(5000)
             })
             .catch( err => {
-              console.log(err)
+              this.$toasted.error(err.response.data.errors[0].message).goAway(5000)
             })
       },
       register() {
@@ -109,12 +124,14 @@ export default {
               this.newUser.password = ''
               this.newUser.confirm = ''
               $('#register').modal('hide');
+              this.$toasted.success('Successfully register, please login').goAway(5000)
             })
             .catch( err => {
-              console.log(err)
+              console.log(err.response.data.errors[0].message)
+              this.$toasted.error(err.response.data.errors[0].message).goAway(5000)
             })
         } else {
-          console.log('Password and confirm is not the same')
+          this.$toasted.error('Password and confirm is not the same').goAway(5000)
         }
       },
       onSignIn(googleUser) {
@@ -132,6 +149,7 @@ export default {
             this.user.password = ''
             this.$emit('changeLogin', true) 
             this.$emit('getTasks')
+            this.$toasted.success('Successfully logged in').goAway(5000)
           })
           .catch( err => {
             console.log(err.responseJSON, 'err')
