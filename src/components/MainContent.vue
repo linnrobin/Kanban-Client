@@ -55,7 +55,7 @@ export default {
     ], 
     methods: {
         destroy(id) {
-        this.isLoading = false
+        this.isLoading = true
         axios({
           method: 'DELETE',
           url: this.baseUrl + '/tasks/' + id,
@@ -75,7 +75,7 @@ export default {
           })
       },
       nextCat(id, category) {
-        this.isLoading = false
+        this.isLoading = true
         let nextCategory = ''
 
         if (category === 'backlog') {
