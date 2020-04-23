@@ -8884,7 +8884,7 @@ function patchScopedSlots (instance) {
   }
 }
 
-},{}],"src/views/LoginPage.vue":[function(require,module,exports) {
+},{}],"src/components/RegisterModal.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8932,74 +8932,12 @@ exports.default = void 0;
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var _default = {
-  name: 'LoginPage',
-  props: ['baseUrl', 'isLogin', 'user', 'newUser'],
-  data: function data() {
-    return {
-      dismissSecs: 10,
-      dismissCountDown: 0,
-      showDismissibleAlert: false
-    };
-  },
+  name: "RegisterModal",
+  props: ['baseUrl', 'newUser'],
   methods: {
-    countDownChanged: function countDownChanged(dismissCountDown) {
-      this.dismissCountDown = dismissCountDown;
-    },
-    showAlert: function showAlert() {
-      this.dismissCountDown = this.dismissSecs;
-    },
-    login: function login() {
-      var _this = this;
-
-      axios({
-        method: 'POST',
-        url: this.baseUrl + '/users/login',
-        data: {
-          email: this.user.email,
-          password: this.user.password
-        }
-      }).then(function (result) {
-        localStorage.setItem('token', result.data.access_token);
-        _this.user.email = '';
-        _this.user.password = '';
-
-        _this.$emit('changeLogin', true);
-
-        _this.$emit('getTasks');
-
-        _this.$toasted.success('Successfully logged in').goAway(5000);
-      }).catch(function (err) {
-        _this.$toasted.error(err.response.data.errors[0].message).goAway(5000);
-      });
-    },
     register: function register() {
-      var _this2 = this;
+      var _this = this;
 
       if (this.newUser.password === this.newUser.confirm) {
         axios({
@@ -9010,155 +8948,47 @@ var _default = {
             password: this.newUser.password
           }
         }).then(function (result) {
-          _this2.newUser.email = '';
-          _this2.newUser.password = '';
-          _this2.newUser.confirm = '';
+          _this.newUser.email = '';
+          _this.newUser.password = '';
+          _this.newUser.confirm = '';
           $('#register').modal('hide');
 
-          _this2.$toasted.success('Successfully register, please login').goAway(5000);
+          _this.$toasted.success('Successfully register, please login').goAway(5000);
         }).catch(function (err) {
-          console.log(err.response.data.errors[0].message);
-
-          _this2.$toasted.error(err.response.data.errors[0].message).goAway(5000);
+          _this.$toasted.error(err.response.data.errors[0].message).goAway(5000);
         });
       } else {
         this.$toasted.error('Password and confirm is not the same').goAway(5000);
       }
-    },
-    onSignIn: function onSignIn(googleUser) {
-      var _this3 = this;
-
-      var id_token = googleUser.getAuthResponse().id_token;
-      axios({
-        method: 'POST',
-        url: this.baseUrl + '/users/googleSign',
-        data: {
-          id_token: id_token
-        }
-      }).then(function (result) {
-        localStorage.setItem('token', result.data.access_token);
-        _this3.user.email = '';
-        _this3.user.password = '';
-
-        _this3.$emit('changeLogin', true);
-
-        _this3.$emit('getTasks');
-
-        _this3.$toasted.success('Successfully logged in').goAway(5000);
-      }).catch(function (err) {
-        console.log(err.responseJSON, 'err');
-      });
     }
-  },
-  mounted: function mounted() {
-    gapi.signin2.render('google-signin-button', {
-      onsuccess: this.onSignIn
-    });
   }
 };
 exports.default = _default;
-        var $956bbc = exports.default || module.exports;
+        var $efb297 = exports.default || module.exports;
       
-      if (typeof $956bbc === 'function') {
-        $956bbc = $956bbc.options;
+      if (typeof $efb297 === 'function') {
+        $efb297 = $efb297.options;
       }
     
         /* template */
-        Object.assign($956bbc, (function () {
+        Object.assign($efb297, (function () {
           var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c(
-      "form",
+      "button",
       {
-        staticClass: "form-signin",
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            return _vm.login($event)
-          }
+        staticClass: "btn btn-primary m-3",
+        attrs: {
+          type: "button",
+          "data-toggle": "modal",
+          "data-target": "#register"
         }
       },
-      [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-label-group" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.user.email,
-                expression: "user.email"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              type: "email",
-              id: "email",
-              placeholder: "Email address",
-              required: "",
-              autofocus: ""
-            },
-            domProps: { value: _vm.user.email },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.user, "email", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "email" } }, [_vm._v("Email address")])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "form-label-group" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.user.password,
-                expression: "user.password"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: {
-              type: "password",
-              id: "password",
-              placeholder: "Password",
-              required: ""
-            },
-            domProps: { value: _vm.user.password },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.user, "password", $event.target.value)
-              }
-            }
-          }),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "password" } }, [_vm._v("Password")])
-        ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-lg btn-primary btn-block",
-            attrs: { type: "submit" }
-          },
-          [_vm._v("Login")]
-        )
-      ]
+      [_vm._v("\n              Register\n          ")]
     ),
-    _vm._v(" "),
-    _vm._m(1),
     _vm._v(" "),
     _c(
       "div",
@@ -9179,7 +9009,7 @@ exports.default = _default;
           { staticClass: "modal-dialog", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(2),
+              _vm._m(0),
               _vm._v(" "),
               _c("div", { staticClass: "modal-body" }, [
                 _c(
@@ -9325,52 +9155,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "text-center mb-4" }, [
-      _c("img", {
-        staticClass: "mb-4",
-        attrs: {
-          src: "/hacktiv8.7e952a32.png",
-          alt: "",
-          width: "72",
-          height: "72"
-        }
-      }),
-      _vm._v(" "),
-      _c("h1", [_vm._v("Kanban Board")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "row", staticStyle: { "justify-content": "center" } },
-      [
-        _c("div", {
-          staticClass: "m-3",
-          attrs: { id: "google-signin-button" }
-        }),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary m-3",
-            attrs: {
-              type: "button",
-              "data-toggle": "modal",
-              "data-target": "#register"
-            }
-          },
-          [_vm._v("\n                Register\n            ")]
-        )
-      ]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
       _c(
         "h5",
@@ -9412,6 +9196,390 @@ render._withStripped = true
         if (api.compatible) {
           module.hot.accept();
           if (!module.hot.data) {
+            api.createRecord('$efb297', $efb297);
+          } else {
+            api.reload('$efb297', $efb297);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/LoginContent.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _RegisterModal = _interopRequireDefault(require("../components/RegisterModal"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: "LoginContent",
+  props: ['baseUrl', 'isLogin', 'user', 'newUser'],
+  components: {
+    RegisterModal: _RegisterModal.default
+  },
+  methods: {
+    login: function login() {
+      var _this = this;
+
+      axios({
+        method: 'POST',
+        url: this.baseUrl + '/users/login',
+        data: {
+          email: this.user.email,
+          password: this.user.password
+        }
+      }).then(function (result) {
+        localStorage.setItem('token', result.data.access_token);
+        _this.user.email = '';
+        _this.user.password = '';
+
+        _this.$emit('changeLogin', true);
+
+        _this.$emit('getTasks');
+
+        _this.$toasted.success('Successfully logged in').goAway(5000);
+      }).catch(function (err) {
+        _this.$toasted.error(err.response.data.errors[0].message).goAway(5000);
+      });
+    },
+    onSignIn: function onSignIn(googleUser) {
+      var _this2 = this;
+
+      var id_token = googleUser.getAuthResponse().id_token;
+      axios({
+        method: 'POST',
+        url: this.baseUrl + '/users/googleSign',
+        data: {
+          id_token: id_token
+        }
+      }).then(function (result) {
+        localStorage.setItem('token', result.data.access_token);
+        _this2.user.email = '';
+        _this2.user.password = '';
+
+        _this2.$emit('changeLogin', true);
+
+        _this2.$emit('getTasks');
+
+        _this2.$toasted.success('Successfully logged in').goAway(5000);
+      }).catch(function (err) {
+        console.log(err.responseJSON, 'err');
+      });
+    }
+  },
+  mounted: function mounted() {
+    gapi.signin2.render('google-signin-button', {
+      onsuccess: this.onSignIn
+    });
+  }
+};
+exports.default = _default;
+        var $44e488 = exports.default || module.exports;
+      
+      if (typeof $44e488 === 'function') {
+        $44e488 = $44e488.options;
+      }
+    
+        /* template */
+        Object.assign($44e488, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "form",
+      {
+        staticClass: "form-signin",
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.login($event)
+          }
+        }
+      },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-label-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.user.email,
+                expression: "user.email"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "email",
+              id: "email",
+              placeholder: "Email address",
+              required: "",
+              autofocus: ""
+            },
+            domProps: { value: _vm.user.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.user, "email", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "email" } }, [_vm._v("Email address")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-label-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.user.password,
+                expression: "user.password"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "password",
+              id: "password",
+              placeholder: "Password",
+              required: ""
+            },
+            domProps: { value: _vm.user.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.user, "password", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "password" } }, [_vm._v("Password")])
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-lg btn-primary btn-block",
+            attrs: { type: "submit" }
+          },
+          [_vm._v("Login")]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "container" }, [
+      _c(
+        "div",
+        { staticClass: "row", staticStyle: { "justify-content": "center" } },
+        [
+          _c("div", {
+            staticClass: "m-3",
+            attrs: { id: "google-signin-button" }
+          }),
+          _vm._v(" "),
+          _c("register-modal", {
+            attrs: { baseUrl: _vm.baseUrl, newUser: _vm.newUser }
+          })
+        ],
+        1
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "text-center mb-4" }, [
+      _c("img", {
+        staticClass: "mb-4",
+        attrs: {
+          src: "/hacktiv8.7e952a32.png",
+          alt: "",
+          width: "72",
+          height: "72"
+        }
+      }),
+      _vm._v(" "),
+      _c("h1", [_vm._v("Kanban Board")])
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$44e488', $44e488);
+          } else {
+            api.reload('$44e488', $44e488);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"../components/RegisterModal":"src/components/RegisterModal.vue","./../hacktiv8.png":[["hacktiv8.7e952a32.png","src/hacktiv8.png"],"src/hacktiv8.png"],"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/LoginPage.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _LoginContent = _interopRequireDefault(require("../components/LoginContent"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var _default = {
+  name: 'LoginPage',
+  props: ['baseUrl', 'isLogin', 'user', 'newUser'],
+  components: {
+    LoginContent: _LoginContent.default
+  },
+  methods: {
+    getTasks: function getTasks() {
+      this.$emit('getTasks');
+    },
+    changeLogin: function changeLogin() {
+      this.$emit('changeLogin', true);
+    }
+  }
+};
+exports.default = _default;
+        var $956bbc = exports.default || module.exports;
+      
+      if (typeof $956bbc === 'function') {
+        $956bbc = $956bbc.options;
+      }
+    
+        /* template */
+        Object.assign($956bbc, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "container" },
+    [
+      _c("login-content", {
+        attrs: {
+          baseUrl: _vm.baseUrl,
+          isLogin: _vm.isLogin,
+          user: _vm.user,
+          newUser: _vm.newUser
+        },
+        on: { getTasks: _vm.getTasks, changeLogin: _vm.changeLogin }
+      })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
             api.createRecord('$956bbc', $956bbc);
           } else {
             api.reload('$956bbc', $956bbc);
@@ -9425,7 +9593,7 @@ render._withStripped = true
       
       }
     })();
-},{"./../hacktiv8.png":[["hacktiv8.7e952a32.png","src/hacktiv8.png"],"src/hacktiv8.png"],"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/MainPage.vue":[function(require,module,exports) {
+},{"../components/LoginContent":"src/components/LoginContent.vue","_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/components/MainContent.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -9566,6 +9734,647 @@ exports.default = void 0;
 //
 //
 //
+var _default = {
+  name: "MainContent",
+  props: ['baseUrl', 'task', 'tasks', 'backlogs', 'todos', 'dones', 'completeds'],
+  methods: {
+    destroy: function destroy(id) {
+      var _this = this;
+
+      axios({
+        method: 'DELETE',
+        url: this.baseUrl + '/tasks/' + id,
+        headers: {
+          access_token: localStorage.token
+        }
+      }).then(function (result) {
+        _this.$emit('getTasks');
+
+        _this.$toasted.success('Successfully deleted task').goAway(5000);
+      }).catch(function (err) {
+        console.log(err.response);
+      });
+    },
+    nextCat: function nextCat(id, category) {
+      var _this2 = this;
+
+      var nextCategory = '';
+
+      if (category === 'backlog') {
+        nextCategory = 'todo';
+      } else if (category === 'todo') {
+        nextCategory = 'done';
+      } else if (category === 'done') {
+        nextCategory = 'completed';
+      }
+
+      if (category === 'completed') {
+        this.$toasted.error('Cannot next because already in final state').goAway(5000);
+      } else {
+        axios({
+          method: 'PUT',
+          url: this.baseUrl + '/tasks/' + id,
+          data: {
+            category: nextCategory
+          },
+          headers: {
+            access_token: localStorage.token
+          }
+        }).then(function (result) {
+          _this2.$emit('getTasks');
+
+          _this2.$toasted.success('Task Status Updated').goAway(5000);
+        }).catch(function (err) {
+          console.log(err.response);
+        });
+      }
+    },
+    previousCat: function previousCat(id, category) {
+      var _this3 = this;
+
+      var previousCategory = '';
+
+      if (category === 'todo') {
+        previousCategory = 'backlog';
+      } else if (category === 'done') {
+        previousCategory = 'todo';
+      } else if (category === 'completed') {
+        previousCategory = 'done';
+      }
+
+      if (category === 'backlog') {
+        this.$toasted.error('Cannot previous because already in final state').goAway(5000);
+      } else {
+        axios({
+          method: 'PUT',
+          url: this.baseUrl + '/tasks/' + id,
+          data: {
+            category: previousCategory
+          },
+          headers: {
+            access_token: localStorage.token
+          }
+        }).then(function (result) {
+          _this3.$emit('getTasks');
+
+          _this3.$toasted.success('Task Status Updated').goAway(5000);
+        }).catch(function (err) {
+          console.log(err.response);
+        });
+      }
+    },
+    editTask: function editTask(id, title) {
+      this.task.title = title;
+      this.task.id = id;
+    }
+  }
+};
+exports.default = _default;
+        var $6fc56d = exports.default || module.exports;
+      
+      if (typeof $6fc56d === 'function') {
+        $6fc56d = $6fc56d.options;
+      }
+    
+        /* template */
+        Object.assign($6fc56d, (function () {
+          var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col columns bg-transparent border-set" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col overflowing" },
+        _vm._l(_vm.backlogs, function(task) {
+          return _c("div", { key: task.id, staticClass: "row content" }, [
+            _c(
+              "div",
+              {
+                staticClass: "card border-success mb-3",
+                staticStyle: { width: "100%", "max-width": "18rem" }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "card-header bg-success border-success" },
+                  [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col full previous" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.previousCat(task.id, task.category)
+                              }
+                            }
+                          },
+                          [_vm._v("<")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col full edit" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#editTask"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.editTask(task.id, task.title)
+                              }
+                            }
+                          },
+                          [_vm._v("Edit")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col full next" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.nextCat(task.id, task.category)
+                              }
+                            }
+                          },
+                          [_vm._v(">")]
+                        )
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body text-success" }, [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(task.title))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "card-footer bg-danger border-success" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "bg-transparent btn-block",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.destroy(task.id)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ]
+                )
+              ]
+            )
+          ])
+        }),
+        0
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col columns bg-transparent border-set" }, [
+      _vm._m(1),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col overflowing" },
+        _vm._l(_vm.todos, function(task) {
+          return _c("div", { key: task.id, staticClass: "row content" }, [
+            _c(
+              "div",
+              {
+                staticClass: "card border-success mb-3",
+                staticStyle: { width: "100%", "max-width": "18rem" }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "card-header bg-success border-success" },
+                  [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col full previous" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.previousCat(task.id, task.category)
+                              }
+                            }
+                          },
+                          [_vm._v("<")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col full edit" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#editTask"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.editTask(task.id, task.title)
+                              }
+                            }
+                          },
+                          [_vm._v("Edit")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col full next" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.nextCat(task.id, task.category)
+                              }
+                            }
+                          },
+                          [_vm._v(">")]
+                        )
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body text-success" }, [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(task.title))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "card-footer bg-danger border-success" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "bg-transparent btn-block",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.destroy(task.id)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ]
+                )
+              ]
+            )
+          ])
+        }),
+        0
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col columns bg-transparent border-set" }, [
+      _vm._m(2),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col overflowing" },
+        _vm._l(_vm.dones, function(task) {
+          return _c("div", { key: task.id, staticClass: "row content" }, [
+            _c(
+              "div",
+              {
+                staticClass: "card border-success mb-3",
+                staticStyle: { width: "100%", "max-width": "18rem" }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "card-header bg-success border-success" },
+                  [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col full previous" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.previousCat(task.id, task.category)
+                              }
+                            }
+                          },
+                          [_vm._v("<")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col full edit" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#editTask"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.editTask(task.id, task.title)
+                              }
+                            }
+                          },
+                          [_vm._v("Edit")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col full next" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.nextCat(task.id, task.category)
+                              }
+                            }
+                          },
+                          [_vm._v(">")]
+                        )
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body text-success" }, [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(task.title))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "card-footer bg-danger border-success" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "bg-transparent btn-block",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.destroy(task.id)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ]
+                )
+              ]
+            )
+          ])
+        }),
+        0
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col columns bg-transparent border-set" }, [
+      _vm._m(3),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "col overflowing" },
+        _vm._l(_vm.completeds, function(task) {
+          return _c("div", { key: task.id, staticClass: "row content" }, [
+            _c(
+              "div",
+              {
+                staticClass: "card border-success mb-3",
+                staticStyle: { width: "100%", "max-width": "18rem" }
+              },
+              [
+                _c(
+                  "div",
+                  { staticClass: "card-header bg-success border-success" },
+                  [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col full previous" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.previousCat(task.id, task.category)
+                              }
+                            }
+                          },
+                          [_vm._v("<")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col full edit" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            attrs: {
+                              "data-toggle": "modal",
+                              "data-target": "#editTask"
+                            },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.editTask(task.id, task.title)
+                              }
+                            }
+                          },
+                          [_vm._v("Edit")]
+                        )
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col full next" }, [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "bg-transparent btn-block",
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.nextCat(task.id, task.category)
+                              }
+                            }
+                          },
+                          [_vm._v(">")]
+                        )
+                      ])
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-body text-success" }, [
+                  _c("h5", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(task.title))
+                  ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "card-footer bg-danger border-success" },
+                  [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "bg-transparent btn-block",
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.destroy(task.id)
+                          }
+                        }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  ]
+                )
+              ]
+            )
+          ])
+        }),
+        0
+      )
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row title", attrs: { id: "backlog" } }, [
+      _c("h3", [_vm._v("Backlog")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row title", attrs: { id: "todo" } }, [
+      _c("h3", [_vm._v("To Do")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row title", attrs: { id: "done" } }, [
+      _c("h3", [_vm._v("Done")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row title", attrs: { id: "completed" } }, [
+      _c("h3", [_vm._v("Completed")])
+    ])
+  }
+]
+render._withStripped = true
+
+          return {
+            render: render,
+            staticRenderFns: staticRenderFns,
+            _compiled: true,
+            _scopeId: null,
+            functional: undefined
+          };
+        })());
+      
+    /* hot reload */
+    (function () {
+      if (module.hot) {
+        var api = require('vue-hot-reload-api');
+        api.install(require('vue'));
+        if (api.compatible) {
+          module.hot.accept();
+          if (!module.hot.data) {
+            api.createRecord('$6fc56d', $6fc56d);
+          } else {
+            api.reload('$6fc56d', $6fc56d);
+          }
+        }
+
+        
+        var reloadCSS = require('_css_loader');
+        module.hot.dispose(reloadCSS);
+        module.hot.accept(reloadCSS);
+      
+      }
+    })();
+},{"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/views/MainPage.vue":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _MainContent = _interopRequireDefault(require("../components/MainContent"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -9645,6 +10454,9 @@ exports.default = void 0;
 var _default = {
   name: 'MainPage',
   props: ['baseUrl', 'task', 'tasks', 'backlogs', 'todos', 'dones', 'completeds'],
+  components: {
+    MainContent: _MainContent.default
+  },
   methods: {
     logout: function logout() {
       localStorage.removeItem('token');
@@ -9681,97 +10493,8 @@ var _default = {
         _this.$toasted.error(err.response.data.errors[0].message).goAway(5000);
       });
     },
-    destroy: function destroy(id) {
-      var _this2 = this;
-
-      axios({
-        method: 'DELETE',
-        url: this.baseUrl + '/tasks/' + id,
-        headers: {
-          access_token: localStorage.token
-        }
-      }).then(function (result) {
-        _this2.$emit('getTasks');
-
-        _this2.$toasted.success('Successfully deleted task').goAway(5000);
-      }).catch(function (err) {
-        console.log(err.response);
-      });
-    },
-    nextCat: function nextCat(id, category) {
-      var _this3 = this;
-
-      var nextCategory = '';
-
-      if (category === 'backlog') {
-        nextCategory = 'todo';
-      } else if (category === 'todo') {
-        nextCategory = 'done';
-      } else if (category === 'done') {
-        nextCategory = 'completed';
-      }
-
-      if (category === 'completed') {
-        this.$toasted.error('Cannot next because already in final state').goAway(5000);
-      } else {
-        axios({
-          method: 'PUT',
-          url: this.baseUrl + '/tasks/' + id,
-          data: {
-            category: nextCategory
-          },
-          headers: {
-            access_token: localStorage.token
-          }
-        }).then(function (result) {
-          _this3.$emit('getTasks');
-
-          _this3.$toasted.success('Task Status Updated').goAway(5000);
-        }).catch(function (err) {
-          console.log(err.response);
-        });
-      }
-    },
-    previousCat: function previousCat(id, category) {
-      var _this4 = this;
-
-      var previousCategory = '';
-
-      if (category === 'todo') {
-        previousCategory = 'backlog';
-      } else if (category === 'done') {
-        previousCategory = 'todo';
-      } else if (category === 'completed') {
-        previousCategory = 'done';
-      }
-
-      if (category === 'backlog') {
-        this.$toasted.error('Cannot previous because already in final state').goAway(5000);
-      } else {
-        axios({
-          method: 'PUT',
-          url: this.baseUrl + '/tasks/' + id,
-          data: {
-            category: previousCategory
-          },
-          headers: {
-            access_token: localStorage.token
-          }
-        }).then(function (result) {
-          _this4.$emit('getTasks');
-
-          _this4.$toasted.success('Task Status Updated').goAway(5000);
-        }).catch(function (err) {
-          console.log(err.response);
-        });
-      }
-    },
-    editTask: function editTask(id, title) {
-      this.task.title = title;
-      this.task.id = id;
-    },
     updateTask: function updateTask(id, title) {
-      var _this5 = this;
+      var _this2 = this;
 
       axios({
         method: 'PUT',
@@ -9783,14 +10506,17 @@ var _default = {
           access_token: localStorage.token
         }
       }).then(function (result) {
-        _this5.$emit('getTasks');
+        _this2.$emit('getTasks');
 
-        _this5.$toasted.success('Task Title Updated').goAway(5000);
+        _this2.$toasted.success('Task Title Updated').goAway(5000);
 
         $('#editTask').modal('hide');
       }).catch(function (err) {
         console.log(err.response);
       });
+    },
+    getTasks: function getTasks() {
+      this.$emit('getTasks');
     }
   }
 };
@@ -10093,395 +10819,27 @@ exports.default = _default;
       )
     ]),
     _vm._v(" "),
-    _c("main", { staticClass: "medium" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col columns bg-transparent border-set" }, [
-          _vm._m(2),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col overflowing" },
-            _vm._l(_vm.backlogs, function(task) {
-              return _c("div", { staticClass: "row content" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "card border-success mb-3",
-                    staticStyle: { width: "100%", "max-width": "18rem" }
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "card-header bg-success border-success" },
-                      [
-                        _c("div", { staticClass: "row" }, [
-                          _c("div", { staticClass: "col full previous" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "bg-transparent btn-block",
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.previousCat(
-                                      task.id,
-                                      task.category
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v("  <  ")]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col full edit" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "bg-transparent btn-block",
-                                attrs: {
-                                  "data-toggle": "modal",
-                                  "data-target": "#editTask"
-                                },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.editTask(task.id, task.title)
-                                  }
-                                }
-                              },
-                              [_vm._v("Edit")]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col full next" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "bg-transparent btn-block",
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.nextCat(task.id, task.category)
-                                  }
-                                }
-                              },
-                              [_vm._v("  >  ")]
-                            )
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "card-body text-success" }, [
-                      _c("h5", { staticClass: "card-title" }, [
-                        _vm._v(_vm._s(task.title))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "card-footer bg-danger border-success" },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.destroy(task.id)
-                              }
-                            }
-                          },
-                          [_vm._v("Delete")]
-                        )
-                      ]
-                    )
-                  ]
-                )
-              ])
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col columns bg-transparent border-set" }, [
-          _vm._m(3),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col overflowing" },
-            _vm._l(_vm.todos, function(task) {
-              return _c("div", { staticClass: "row content" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "card border-success mb-3",
-                    staticStyle: { width: "100%", "max-width": "18rem" }
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "card-header bg-success border-success" },
-                      [
-                        _c("div", { staticClass: "row" }, [
-                          _c("div", { staticClass: "col full previous" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "bg-transparent btn-block",
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.previousCat(
-                                      task.id,
-                                      task.category
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v("Previous")]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col full next" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "bg-transparent btn-block",
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.nextCat(task.id, task.category)
-                                  }
-                                }
-                              },
-                              [_vm._v("Next")]
-                            )
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "card-body text-success" }, [
-                      _c("h5", { staticClass: "card-title" }, [
-                        _vm._v(_vm._s(task.title))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "card-footer bg-danger border-success" },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.destroy(task.id)
-                              }
-                            }
-                          },
-                          [_vm._v("Delete")]
-                        )
-                      ]
-                    )
-                  ]
-                )
-              ])
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col columns bg-transparent border-set" }, [
-          _vm._m(4),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col overflowing" },
-            _vm._l(_vm.dones, function(task) {
-              return _c("div", { staticClass: "row content" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "card border-success mb-3",
-                    staticStyle: { width: "100%", "max-width": "18rem" }
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "card-header bg-success border-success" },
-                      [
-                        _c("div", { staticClass: "row" }, [
-                          _c("div", { staticClass: "col full previous" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "bg-transparent btn-block",
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.previousCat(
-                                      task.id,
-                                      task.category
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v("Previous")]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col full next" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "bg-transparent btn-block",
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.nextCat(task.id, task.category)
-                                  }
-                                }
-                              },
-                              [_vm._v("Next")]
-                            )
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "card-body text-success" }, [
-                      _c("h5", { staticClass: "card-title" }, [
-                        _vm._v(_vm._s(task.title))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "card-footer bg-danger border-success" },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.destroy(task.id)
-                              }
-                            }
-                          },
-                          [_vm._v("Delete")]
-                        )
-                      ]
-                    )
-                  ]
-                )
-              ])
-            }),
-            0
-          )
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col columns bg-transparent border-set" }, [
-          _vm._m(5),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "col overflowing" },
-            _vm._l(_vm.completeds, function(task) {
-              return _c("div", { staticClass: "row content" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "card border-success mb-3",
-                    staticStyle: { width: "100%", "max-width": "18rem" }
-                  },
-                  [
-                    _c(
-                      "div",
-                      { staticClass: "card-header bg-success border-success" },
-                      [
-                        _c("div", { staticClass: "row" }, [
-                          _c("div", { staticClass: "col full previous" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "bg-transparent btn-block",
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.previousCat(
-                                      task.id,
-                                      task.category
-                                    )
-                                  }
-                                }
-                              },
-                              [_vm._v("Previous")]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "col full next" }, [
-                            _c(
-                              "button",
-                              {
-                                staticClass: "bg-transparent btn-block",
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.nextCat(task.id, task.category)
-                                  }
-                                }
-                              },
-                              [_vm._v("Next")]
-                            )
-                          ])
-                        ])
-                      ]
-                    ),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "card-body text-success" }, [
-                      _c("h5", { staticClass: "card-title" }, [
-                        _vm._v(_vm._s(task.title))
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c(
-                      "div",
-                      { staticClass: "card-footer bg-danger border-success" },
-                      [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "bg-transparent btn-block",
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.destroy(task.id)
-                              }
-                            }
-                          },
-                          [_vm._v("Delete")]
-                        )
-                      ]
-                    )
-                  ]
-                )
-              ])
-            }),
-            0
-          )
-        ])
-      ])
-    ]),
+    _c(
+      "main",
+      { staticClass: "medium" },
+      [
+        _c("main-content", {
+          attrs: {
+            baseUrl: _vm.baseUrl,
+            task: _vm.task,
+            tasks: _vm.tasks,
+            backlogs: _vm.backlogs,
+            todos: _vm.todos,
+            dones: _vm.dones,
+            completeds: _vm.completeds
+          },
+          on: { getTasks: _vm.getTasks }
+        })
+      ],
+      1
+    ),
     _vm._v(" "),
-    _vm._m(6)
+    _vm._m(2)
   ])
 }
 var staticRenderFns = [
@@ -10535,38 +10893,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row title", attrs: { id: "backlog" } }, [
-      _c("h3", [_vm._v("Backlog")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row title", attrs: { id: "todo" } }, [
-      _c("h3", [_vm._v("To Do")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row title", attrs: { id: "done" } }, [
-      _c("h3", [_vm._v("Done")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row title", attrs: { id: "completed" } }, [
-      _c("h3", [_vm._v("Completed")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("footer", [
       _c(
         "div",
@@ -10612,7 +10938,7 @@ render._withStripped = true
       
       }
     })();
-},{"./../hacktiv8.png":[["hacktiv8.7e952a32.png","src/hacktiv8.png"],"src/hacktiv8.png"],"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
+},{"../components/MainContent":"src/components/MainContent.vue","./../hacktiv8.png":[["hacktiv8.7e952a32.png","src/hacktiv8.png"],"src/hacktiv8.png"],"_css_loader":"../../../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/css-loader.js","vue-hot-reload-api":"node_modules/vue-hot-reload-api/dist/index.js","vue":"node_modules/vue/dist/vue.runtime.esm.js"}],"src/App.vue":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -10871,7 +11197,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60816" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63595" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

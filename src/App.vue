@@ -24,7 +24,7 @@
             @changeLogin='changeLogin'
           ></main-page>
         </div>
-         
+
     </div>  
 
 </template>
