@@ -9253,8 +9253,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
 var _default = {
   name: "LoginContent",
+  data: function data() {
+    return {
+      isLoading: false
+    };
+  },
   props: ['baseUrl', 'isLogin', 'user', 'newUser'],
   components: {
     RegisterModal: _RegisterModal.default
@@ -9263,6 +9271,7 @@ var _default = {
     login: function login() {
       var _this = this;
 
+      this.isLoading = true;
       axios({
         method: 'POST',
         url: this.baseUrl + '/users/login',
@@ -9282,6 +9291,8 @@ var _default = {
         _this.$toasted.success('Successfully logged in').goAway(5000);
       }).catch(function (err) {
         _this.$toasted.error(err.response.data.errors[0].message).goAway(5000);
+      }).finally(function () {
+        _this.isLoading = false;
       });
     },
     onSignIn: function onSignIn(googleUser) {
@@ -9306,6 +9317,8 @@ var _default = {
         _this2.$toasted.success('Successfully logged in').goAway(5000);
       }).catch(function (err) {
         console.log(err.responseJSON, 'err');
+      }).finally(function () {
+        _this2.isLoading = false;
       });
     }
   },
@@ -9410,14 +9423,20 @@ exports.default = _default;
           _c("label", { attrs: { for: "password" } }, [_vm._v("Password")])
         ]),
         _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-lg btn-primary btn-block",
-            attrs: { type: "submit" }
-          },
-          [_vm._v("Login")]
-        )
+        _vm.isLoading
+          ? _c(
+              "div",
+              { staticClass: "spinner-border", attrs: { role: "status" } },
+              [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
+            )
+          : _c(
+              "button",
+              {
+                staticClass: "btn btn-lg btn-primary btn-block",
+                attrs: { type: "submit" }
+              },
+              [_vm._v("Login")]
+            )
       ]
     ),
     _vm._v(" "),
@@ -9641,13 +9660,23 @@ exports.default = void 0;
 //
 //
 //
+//
+//
+//
+//
 var _default = {
   name: "MainContent",
+  data: function data() {
+    return {
+      isLoading: false
+    };
+  },
   props: ['baseUrl', 'task', 'tasks', 'categories'],
   methods: {
     destroy: function destroy(id) {
       var _this = this;
 
+      this.isLoading = false;
       axios({
         method: 'DELETE',
         url: this.baseUrl + '/tasks/' + id,
@@ -9660,12 +9689,14 @@ var _default = {
         _this.$toasted.success('Successfully deleted task').goAway(5000);
       }).catch(function (err) {
         console.log(err.response);
+      }).finally(function () {
+        _this.isLoading = false;
       });
     },
     nextCat: function nextCat(id, category) {
       var _this2 = this;
 
-      console.log(id, category);
+      this.isLoading = false;
       var nextCategory = '';
 
       if (category === 'backlog') {
@@ -9694,12 +9725,15 @@ var _default = {
           _this2.$toasted.success('Task Status Updated').goAway(5000);
         }).catch(function (err) {
           console.log(err.response);
+        }).finally(function () {
+          _this2.isLoading = false;
         });
       }
     },
     previousCat: function previousCat(id, category) {
       var _this3 = this;
 
+      this.isLoading = true;
       var previousCategory = '';
 
       if (category === 'todo') {
@@ -9728,6 +9762,8 @@ var _default = {
           _this3.$toasted.success('Task Status Updated').goAway(5000);
         }).catch(function (err) {
           console.log(err.response);
+        }).finally(function () {
+          _this3.isLoading = false;
         });
       }
     },
@@ -9759,7 +9795,19 @@ exports.default = _default;
         { key: index, staticClass: "col columns bg-transparent border-set" },
         [
           _c("div", { staticClass: "row title", attrs: { id: index } }, [
-            _c("h3", [_vm._v(_vm._s(index))])
+            _c("h3", [_vm._v(_vm._s(index))]),
+            _vm._v(" "),
+            _vm.isLoading
+              ? _c(
+                  "div",
+                  { staticClass: "spinner-border", attrs: { role: "status" } },
+                  [
+                    _c("span", { staticClass: "sr-only" }, [
+                      _vm._v("Loading...")
+                    ])
+                  ]
+                )
+              : _c("div")
           ]),
           _vm._v(" "),
           _c(
@@ -10013,21 +10061,32 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 //
 //
 //
+//
+//
+//
+//
+//
+//
 var _default = {
   name: 'MainPage',
+  data: function data() {
+    return {
+      isLoading: false
+    };
+  },
   props: ['baseUrl', 'task', 'tasks', 'categories'],
   components: {
     MainContent: _MainContent.default
   },
   methods: {
     logout: function logout() {
+      this.$toasted.success('Successfully logged out').goAway(5000);
+      localStorage.removeItem('token');
+      this.$emit('changeLogin', false);
       var auth2 = gapi.auth2.getAuthInstance();
       auth2.signOut().then(function () {
         console.log('User signed out.');
       });
-      this.$toasted.success('Successfully logged out').goAway(5000);
-      localStorage.removeItem('token');
-      this.$emit('changeLogin', false);
     },
     emptyAdd: function emptyAdd() {
       this.task.title = '';
@@ -10035,6 +10094,7 @@ var _default = {
     addTask: function addTask() {
       var _this = this;
 
+      this.isLoading = true;
       axios({
         method: "POST",
         url: this.baseUrl + '/tasks',
@@ -10056,11 +10116,14 @@ var _default = {
         _this.$toasted.success('Successfully added task').goAway(5000);
       }).catch(function (err) {
         _this.$toasted.error(err.response.data.errors[0].message).goAway(5000);
+      }).finally(function () {
+        _this.isLoading = false;
       });
     },
     updateTask: function updateTask(id, title) {
       var _this2 = this;
 
+      this.isLoading = true;
       axios({
         method: 'PUT',
         url: this.baseUrl + '/tasks/' + id.id,
@@ -10078,6 +10141,8 @@ var _default = {
         $('#editTask').modal('hide');
       }).catch(function (err) {
         console.log(err.response);
+      }).finally(function () {
+        _this2.isLoading = false;
       });
     },
     getTasks: function getTasks() {
@@ -10110,7 +10175,17 @@ exports.default = _default;
           }
         }),
         _vm._v(" "),
-        _c("h1", [_vm._v(" Kanban Board ")]),
+        _c("div", { staticClass: "row" }, [
+          _c("h1", [_vm._v(" Kanban Board ")]),
+          _vm._v(" "),
+          _vm.isLoading
+            ? _c(
+                "div",
+                { staticClass: "spinner-border", attrs: { role: "status" } },
+                [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
+              )
+            : _c("div")
+        ]),
         _vm._v(" "),
         _c("div", [
           _c(
@@ -10557,9 +10632,9 @@ var _default = {
   data: function data() {
     return {
       //localhost
-      baseUrl: 'http://localhost:3000',
+      // baseUrl: 'http://localhost:3000',
       //firebase
-      // baseUrl: 'https://kanban-server-robin.herokuapp.com',
+      baseUrl: 'https://kanban-server-robin.herokuapp.com',
       isLogin: false,
       user: {
         email: "",
@@ -10761,7 +10836,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49776" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57012" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

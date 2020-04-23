@@ -3,6 +3,10 @@
                     <div class="col columns bg-transparent border-set" v-for="(category,index) in categories" :key="index">
                         <div class="row title" :id="index">
                             <h3>{{index}}</h3>
+                            <div v-if="isLoading" class="spinner-border" role="status">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                            <div v-else></div>
                         </div>
                         <div class ="col overflowing">
                         <div class="row content" v-for="task in category" :key="task.id">
@@ -38,6 +42,11 @@
 <script>
 export default {
     name: "MainContent",
+    data () {
+      return {
+        isLoading: false
+      }
+    },
     props: [
         'baseUrl',
         'task',
@@ -46,6 +55,7 @@ export default {
     ], 
     methods: {
         destroy(id) {
+        this.isLoading = false
         axios({
           method: 'DELETE',
           url: this.baseUrl + '/tasks/' + id,
@@ -60,9 +70,12 @@ export default {
           .catch( err => {
             console.log(err.response)
           })
+          .finally(() => {
+              this.isLoading = false
+          })
       },
       nextCat(id, category) {
-        console.log(id,category)
+        this.isLoading = false
         let nextCategory = ''
 
         if (category === 'backlog') {
@@ -93,9 +106,13 @@ export default {
             .catch( err => {
               console.log(err.response)
             })
+            .finally(() => {
+                this.isLoading = false
+            })
         }
       },
       previousCat(id, category) {
+        this.isLoading = true
         let previousCategory = ''
 
         if (category === 'todo') {
@@ -125,6 +142,9 @@ export default {
             })
             .catch( err => {
               console.log(err.response)
+            })
+            .finally(() => {
+                this.isLoading = false
             })
         }
       },

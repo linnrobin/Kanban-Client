@@ -3,8 +3,14 @@
         <div class="container-fluid">
             <header>
                 <nav class="navbar fixed-top">
-                    <img src="../hacktiv8.png" alt="" width="48" height="48">         
-                    <h1> Kanban Board </h1>
+                    <img src="../hacktiv8.png" alt="" width="48" height="48">
+                    <div class="row">
+                      <h1> Kanban Board </h1>
+                      <div v-if="isLoading" class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                      <div v-else></div>
+                    </div>         
                     <div>
                         <!-- Button trigger modal -->
                         <button @click.prevent="emptyAdd" type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTask">
@@ -97,6 +103,11 @@ import MainContent from '../components/MainContent'
 
 export default {
     name: 'MainPage',
+    data () {
+      return {
+        isLoading: false
+      }
+    },
     props: [
         'baseUrl',
         'task',
@@ -108,18 +119,21 @@ export default {
     },
     methods: {
         logout() {
+            this.$toasted.success('Successfully logged out').goAway(5000)
+            localStorage.removeItem('token')
+            this.$emit('changeLogin', false)
+
             var auth2 = gapi.auth2.getAuthInstance()
             auth2.signOut().then(function () {
               console.log('User signed out.')
             })
-            this.$toasted.success('Successfully logged out').goAway(5000)
-            localStorage.removeItem('token')
-            this.$emit('changeLogin', false)
+
       },
       emptyAdd () {
         this.task.title = ''
       },
       addTask() {
+        this.isLoading = true
         axios({
           method: "POST",
           url: this.baseUrl + '/tasks',
@@ -141,8 +155,13 @@ export default {
           .catch( err => {
             this.$toasted.error(err.response.data.errors[0].message).goAway(5000)
           })
+          .finally(() => {
+              this.isLoading = false
+          })
+          
       },
       updateTask(id, title) {
+        this.isLoading = true
         axios({
             method: 'PUT',
             url: this.baseUrl + '/tasks/' + id.id,
@@ -160,6 +179,9 @@ export default {
             })
             .catch( err => {
               console.log(err.response)
+            })
+            .finally(() => {
+                this.isLoading = false
             })
       },
       getTasks() {

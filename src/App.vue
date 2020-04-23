@@ -39,10 +39,10 @@ export default {
     data() {
         return {
             //localhost
-            baseUrl: 'http://localhost:3000',
+            // baseUrl: 'http://localhost:3000',
 
             //firebase
-            // baseUrl: 'https://kanban-server-robin.herokuapp.com',
+            baseUrl: 'https://kanban-server-robin.herokuapp.com',
 
             isLogin: false,
             user: {
